@@ -1,0 +1,7 @@
+/catalogo.json
+  Cache-Control: public, max-age=60, s-maxage=60
+/libros/*
+  Cache-Control: public, max-age=300, s-maxage=3600
+/*
+  X-Content-Type-Options: nosniff
+  Referrer-Policy: strict-origin-when-cross-origin
