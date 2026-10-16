@@ -1,13 +1,23 @@
 # EMA: Historias que Cobran Vida
 ## Plan maestro — página web pública de lectura
 
-**Versión:** 3.0  
+**Versión:** 3.1  
 **Fecha:** 16 de octubre de 2026  
 **Repositorio:** [EMA](https://github.com/martin30eler-sketch/EMA) (**público**)  
 **Panel administrativo separado:** [ADMINN-EMA](https://github.com/martin30eler-sketch/ADMINN-EMA) (**privado**)  
 **App Android separada:** [EMA_app](https://github.com/martin30eler-sketch/EMA_app) (**privado**).
 
 > **Decisión definitiva:** EMA contiene **solo la web pública** de lectura. Ni el panel de administración ni la app Android viven en este repositorio. Todos consumen un backend común bajo permisos diferenciados.
+
+## 0. Actualización de infraestructura — imágenes en Cloudflare Pages
+
+**Decisión confirmada el 16/10/2026:** **portadas e ilustraciones publicadas se distribuyen desde Cloudflare Pages** del sitio web EMA, con direcciones HTTP públicas que utilizarán tanto EMA web como EMA_app Android. Los links de imágenes `lh3.googleusercontent.com/gg-dl` de Gemini Storybook **no funcionan desde cuentas externas** y no se usarán como origen para lectores.
+
+**Preparación requerida:** ADMINN-EMA importa HTML+ZIP del Storybook, extrae y verifica **todo el texto** y las imágenes (incluida portada), presenta vista previa y, tras aprobación, usa un mecanismo protegido para integrar archivos estáticos optimizados en un **nuevo despliegue de Pages**. Guardar en el catálogo la ruta/URL pública correspondiente a cada página. El hecho de que Pages sirva contenido estático implica que **no se puede insertar una imagen arbitraria en producción mediante un simple upload del navegador sin redesplegar**. No se deben exponer claves de despliegue en web pública, APK o cliente ADMINN-EMA.
+
+**Organización propuesta:** rutas `/libros/<id>/portada.webp`, `/libros/<id>/pagina-001.webp`, etc. El sitio EMA sirve exclusivamente libros publicados; los borradores e imágenes no aprobadas permanecen privados hasta ser publicados. Cloudflare R2 no se contrata para el lanzamiento; se reevalúa si el número de libros/archivos o necesidad de cargas dinámicas lo justifica. Audio/narración queda como decisión de alojamiento separada.
+
+**Estado:** decisión documentada pero no implementada. La web pública sigue sin código ni despliegue; la primera versión del panel ADMINN-EMA que se había escrito usa Supabase y requiere migración si se adopta definitivamente Firebase Spark como backend de metadatos.
 
 ## 1. Visión y marca
 
