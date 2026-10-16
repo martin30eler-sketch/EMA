@@ -11,6 +11,14 @@ Este archivo es la **bitácora cronológica del trabajo real** realizado en el r
 
 ## Registro cronológico
 
+### 2026-10-16 — Hito 002: Distribución pública de ilustraciones por Cloudflare Pages
+- **Decisión:** la web EMA servirá portadas e ilustraciones desde Cloudflare Pages y la APK reutilizará esas mismas URLs, nunca enlaces privados de Gemini Storybook.
+- **Diseño pendiente:** incorporar imágenes verificadas mediante un despliegue automatizado, no mediante carga directa en runtime. Los borradores deberán permanecer privados.
+- **Alcance:** se actualizó [PLAN_MAESTRO_EMA.md](./PLAN_MAESTRO_EMA.md) a v3.1; no se desplegó un sitio ni se subieron todavía los archivos a Cloudflare.
+- **Dependencia:** ADMINN-EMA debe construir y autorizar el flujo de publicación de recursos.
+- **Estado:** decisión documentada, implementación pendiente.
+
+
 ### 2026-10-16 — Hito 001: Plan maestro inicial
 - **Área:** documentación.
 - **Realizado:** se creó el plan maestro para una plataforma de lectura con biblioteca pública, narraciones, lector Page Flip 3D, publicación de libros producidos en Gemini Storybook y aplicación Android.
