@@ -5,11 +5,18 @@
 **Documento de planificación:** [PLAN_MAESTRO_EMA.md](./PLAN_MAESTRO_EMA.md)  
 **Fecha de apertura del historial:** 2026-10-16  
 **Última actualización registrada:** 2026-10-16  
-**Estado actual:** **Planificación documentada; implementación no iniciada.**
+**Estado actual:** **Web estática Vite con biblioteca y lector implementados; CI superado; Pages aún no desplegado.**
 
 Este archivo es la **bitácora cronológica del trabajo real** realizado en el repositorio. Su propósito es permitir saber qué se hizo, por qué se hizo, qué falta, cómo se comprobó y dónde localizar cada cambio. No equivale a un cronograma ni sustituye el plan maestro.
 
 ## Registro cronológico
+
+### 2026-10-16 — Hito 003: Primer sitio público funcional en código
+- **Implementado:** Vite/JS/CSS, identidad editorial EMA, buscador, catálogo y lector de una página ilustrada a la vez, efecto de transición en perspectiva, avance/retroceso, narración SpeechSynthesis y progreso local.
+- **Contrato:** `public/catalogo.json` y archivos `public/libros/<id>/libro.json` + ilustraciones; se valida integridad y rutas antes de mostrar un libro.
+- **Pruebas:** GitHub Actions de EMA, ejecución `38977592580` exitosa (`npm test` + `npm run build`).
+- **Estado:** código subido a `main`; **no hay Cloudflare Pages conectado ni libro piloto publicado**. El catálogo vacío es deliberado.
+
 
 ### 2026-10-16 — Hito 002: Distribución pública de ilustraciones por Cloudflare Pages
 - **Decisión:** la web EMA servirá portadas e ilustraciones desde Cloudflare Pages y la APK reutilizará esas mismas URLs, nunca enlaces privados de Gemini Storybook.

@@ -1,7 +1,7 @@
 # EMA: Historias que Cobran Vida
 ## Plan maestro — página web pública de lectura
 
-**Versión:** 3.1  
+**Versión:** 3.2  
 **Fecha:** 16 de octubre de 2026  
 **Repositorio:** [EMA](https://github.com/martin30eler-sketch/EMA) (**público**)  
 **Panel administrativo separado:** [ADMINN-EMA](https://github.com/martin30eler-sketch/ADMINN-EMA) (**privado**)  
@@ -17,7 +17,7 @@
 
 **Organización propuesta:** rutas `/libros/<id>/portada.webp`, `/libros/<id>/pagina-001.webp`, etc. El sitio EMA sirve exclusivamente libros publicados; los borradores e imágenes no aprobadas permanecen privados hasta ser publicados. Cloudflare R2 no se contrata para el lanzamiento; se reevalúa si el número de libros/archivos o necesidad de cargas dinámicas lo justifica. Audio/narración queda como decisión de alojamiento separada.
 
-**Estado:** decisión documentada pero no implementada. La web pública sigue sin código ni despliegue; la primera versión del panel ADMINN-EMA que se había escrito usa Supabase y requiere migración si se adopta definitivamente Firebase Spark como backend de metadatos.
+**Estado actualizado:** web React-free sobre **Vite + JavaScript nativo** con catálogo, lector, animación de paso y síntesis de voz iniciales; CI web verificado. **No hay despliegue Cloudflare ni libros publicados aún.** El publicador protegido de ADMINN-EMA está programado pero pendiente de configurar.
 
 ## 1. Visión y marca
 
@@ -37,7 +37,7 @@
 | **ADMINN-EMA** — panel privado | Importar, editar, previsualizar y publicar libros y narraciones; operaciones editoriales privilegiadas | No biblioteca pública ni aplicación Android |
 | **EMA_app** — Android privado | App nativa instalable, catálogo, lector animado, audio, progreso, favoritos y compilaciones APK/AAB | No administración ni sitio web público |
 
-**Un backend compartido** entrega exclusivamente contenidos publicados a la web y Android. Las acciones de publicación deben exigir credenciales y roles en el servidor. **Nunca** compartir secretos del panel con los clientes públicos.
+**Un formato público estático versionado** entrega exclusivamente libros aprobados desde Cloudflare Pages a web y Android. La **Pages Function privada** de ADMINN-EMA es la única que escribe nuevos libros en GitHub. Los lectores no necesitan backend dinámico para leer.
 
 \`\`\`mermaid
 flowchart TD
@@ -56,7 +56,7 @@ flowchart TD
 - Usar IDs de libros y páginas estables; definir versionado y tipos del contrato de contenido.
 - Publicar cambios compatibles en la API para que web y APK no fallen al actualizarse independientemente.
 - Mantener separados los despliegues, repositorios, CI y variables de entorno.
-- Una única estrategia de migraciones de base de datos, acordada entre equipos.
+- Los textos publicados son archivos JSON versionados; no hay migraciones de base de datos para el lector público.
 - El repositorio EMA es **público**: no agregar credenciales ni datos privados.
 - No incluir rutas \`/admin\`, código de importación de archivos o acciones de publicación en este repositorio.
 
@@ -64,16 +64,24 @@ flowchart TD
 
 | Componente | Propuesta | Razón |
 |---|---|---|
-| Framework | Next.js + React + TypeScript | SEO y experiencia pública con buen rendimiento |
+| Framework | **Vite + JavaScript y CSS** (implementado) | Archivos estáticos servidos por Cloudflare Pages |
 | Estilos | Sistema de componentes y tokens EMA | Identidad editorial consistente |
-| Autenticación | Supabase Auth | Sincronizar progreso y favoritos con Android |
-| Catálogo | API compartida, solo libros publicados | Separación de privilegios |
-| Recursos | Storage/CDN según derechos | Portadas, páginas y audios optimizados |
+| Autenticación | **No requerida para lectura** | Progreso local, posible cuenta posterior |
+| Catálogo | **\`/catalogo.json\`** (implementado) | Libros aprobados sin consultas a BD |
+| Recursos | **\`/libros/<id>/...\` en Cloudflare Pages** | JSON e imágenes de cada página |
 | Lector | Page Flip 3D con alternativa accesible | Simular las hojas físicas sin bloquear lectura |
-| Narración | Audio preparado por ADMINN-EMA | Controles reproducir, pausar y sincronizar páginas |
+| Narración | **SpeechSynthesis de navegador** provisional | Audio grabado queda pendiente de integrar |
 | Calidad | Pruebas automáticas + accesibilidad | Seguridad y lectura estable |
 
-### Estructura prevista
+### Estado del código actual
+
+- `src/main.js`: catálogo, búsqueda, lector, narración básica y progreso local.
+- `src/libros.js`: validación de esquemas v1, IDs y rutas de recursos.
+- `public/catalogo.json`: catálogo vacío hasta autorización editorial.
+- `tests/libros.test.mjs` y `.github/workflows/verify-web.yml`: pruebas automáticas.
+- `public/_headers`: cabeceras HTTP estáticas para Pages.
+
+### Estructura prevista para siguientes fases
 
 \`\`\`text
 EMA/
