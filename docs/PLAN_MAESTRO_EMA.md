@@ -39,17 +39,15 @@
 
 **Un formato público estático versionado** entrega exclusivamente libros aprobados desde Cloudflare Pages a web y Android. La **Pages Function privada** de ADMINN-EMA es la única que escribe nuevos libros en GitHub. Los lectores no necesitan backend dinámico para leer.
 
-\`\`\`mermaid
+```mermaid
 flowchart TD
-    G[Gemini Storybook - creación externa] -. archivos autorizados .-> A[ADMINN-EMA - panel privado]
-    A --> S[Backend editorial protegido]
-    S --> D[(Base de datos y almacenamiento compartidos)]
-    D --> P[API pública controlada]
-    P --> W[EMA - web pública]
-    P --> M[EMA_app - Android]
-    L[Lectores] --> W
-    L --> M
-\`\`\`
+    G[Gemini Storybook] --> A[ADMINN-EMA privado]
+    A --> F[Cloudflare Access y Pages Function]
+    F --> GH[GitHub EMA - libros aprobados]
+    GH --> CF[Cloudflare Pages publico]
+    CF --> W[EMA web]
+    CF --> M[EMA_app Android]
+```
 
 ### Acuerdos entre repositorios
 
