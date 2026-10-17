@@ -1,8 +1,8 @@
 # EMA: Historias que Cobran Vida
 ## Plan maestro — página web pública de lectura
 
-**Versión:** 3.2  
-**Fecha:** 16 de octubre de 2026  
+**Versión:** 3.3  
+**Fecha:** 17 de octubre de 2026  
 **Repositorio:** [EMA](https://github.com/martin30eler-sketch/EMA) (**público**)  
 **Panel administrativo separado:** [ADMINN-EMA](https://github.com/martin30eler-sketch/ADMINN-EMA) (**privado**)  
 **App Android separada:** [EMA_app](https://github.com/martin30eler-sketch/EMA_app) (**privado**).
@@ -37,12 +37,12 @@
 | **ADMINN-EMA** — panel privado | Importar, editar, previsualizar y publicar libros y narraciones; operaciones editoriales privilegiadas | No biblioteca pública ni aplicación Android |
 | **EMA_app** — Android privado | App nativa instalable, catálogo, lector animado, audio, progreso, favoritos y compilaciones APK/AAB | No administración ni sitio web público |
 
-**Un formato público estático versionado** entrega exclusivamente libros aprobados desde Cloudflare Pages a web y Android. La **Pages Function privada** de ADMINN-EMA es la única que escribe nuevos libros en GitHub. Los lectores no necesitan backend dinámico para leer.
+**Un formato público estático versionado** entrega exclusivamente libros aprobados desde Cloudflare Pages a web y Android. La **Pages Function de ADMINN-EMA, protegida con token Firebase firmado y UID autorizado**, es la única que escribe nuevos libros en GitHub. Los lectores no necesitan backend dinámico para leer.
 
 ```mermaid
 flowchart TD
     G[Gemini Storybook] --> A[ADMINN-EMA privado]
-    A --> F[Cloudflare Access y Pages Function]
+    A --> F[Firebase Auth Google y Pages Function]
     F --> GH[GitHub EMA - libros aprobados]
     GH --> CF[Cloudflare Pages publico]
     CF --> W[EMA web]
