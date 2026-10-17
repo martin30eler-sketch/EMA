@@ -34,10 +34,10 @@ public/
 
 No subir borradores, documentos originales de sesión de Gemini, tokens ni imágenes no aprobadas. El catálogo vacío es deliberado: **no se ha autorizado aún publicar el libro piloto**, aunque el importador ya dispone de su texto.
 
-## Despliegue a Cloudflare Pages (pendiente de vincular cuenta)
-1. Cloudflare → Workers & Pages → Create → Pages → conectar repositorio GitHub `martin30eler-sketch/EMA`.
-2. Framework: **Vite**; comando de build: `npm run build`; directorio de salida: `dist`; raíz: `/`.
-3. Elegir proyecto, confirmar permisos y desplegar. Los pushes posteriores generan un nuevo despliegue.
+## Despliegue público activo en Cloudflare Pages (17/10/2026)
+1. **COMPLETADO:** proyecto Pages `ema` enlazado a GitHub `martin30eler-sketch/EMA`, rama `main`.
+2. **COMPLETADO:** framework `Ninguno` (Vite sin preset); comando `npm run build`; salida `dist`; raíz predeterminada.
+3. **COMPLETADO:** primer despliegue de producción confirmado por Cloudflare Pages el 17/10/2026. URL: **https://ema-85p.pages.dev/**. Los pushes posteriores a `main` disparan nuevos despliegues.
 4. Para añadir libros, incorporar a `public/libros/<id>/` el paquete aprobado y actualizar `public/catalogo.json` con la ficha. Esa publicación tendrá que automatizarse desde ADMINN-EMA mediante un backend autorizado; aún no está conectada.
 
-No hay URL pública de Pages ni claves Cloudflare configuradas todavía. Este README no implica despliegue real.
+**Estado real:** Cloudflare API confirma el proyecto `ema`, rama `main`, origen GitHub y despliegue en producción `success` (`c253c151-e3c9-4713-9f75-f9bb0caced7f`). El catálogo sigue vacío hasta publicar un libro aprobado. El panel ADMINN-EMA aún no está desplegado.
