@@ -1,7 +1,7 @@
 # EMA: Historias que Cobran Vida
 ## Plan maestro — página web pública de lectura
 
-**Versión:** 3.3  
+**Versión:** 3.4  
 **Fecha:** 17 de octubre de 2026  
 **Repositorio:** [EMA](https://github.com/martin30eler-sketch/EMA) (**público**)  
 **Panel administrativo separado:** [ADMINN-EMA](https://github.com/martin30eler-sketch/ADMINN-EMA) (**privado**)  
@@ -17,7 +17,14 @@
 
 **Organización propuesta:** rutas `/libros/<id>/portada.webp`, `/libros/<id>/pagina-001.webp`, etc. El sitio EMA sirve exclusivamente libros publicados; los borradores e imágenes no aprobadas permanecen privados hasta ser publicados. Cloudflare R2 no se contrata para el lanzamiento; se reevalúa si el número de libros/archivos o necesidad de cargas dinámicas lo justifica. Audio/narración queda como decisión de alojamiento separada.
 
-**Estado actualizado:** web React-free sobre **Vite + JavaScript nativo** con catálogo, lector, animación de paso y síntesis de voz iniciales; CI web verificado. **No hay despliegue Cloudflare ni libros publicados aún.** El publicador protegido de ADMINN-EMA está programado pero pendiente de configurar.
+**Estado actualizado:** web React-free sobre **Vite + JavaScript nativo** con catálogo, lector, animación de paso y síntesis de voz iniciales; CI web verificado. **El sitio web público está desplegado en https://ema-85p.pages.dev/ desde 17/10/2026; todavía no hay libros publicados.** El publicador protegido de ADMINN-EMA está programado pero pendiente de configurar.
+
+## 0.2. Primer despliegue público verificado (17/10/2026)
+
+- **Cloudflare Pages:** proyecto `ema`, dominio `ema-85p.pages.dev`, rama `main`, origen GitHub `martin30eler-sketch/EMA`.
+- **Build:** `npm run build`, salida `dist`, Vite sin preset (`Ninguno`).
+- **Verificación de infraestructura:** API Cloudflare Pages reportó despliegue de producción `success` (ID `c253c151-e3c9-4713-9f75-f9bb0caced7f`).
+- **Limitación actual:** no hay libro piloto publicado; catálogo vacío deliberado. El despliegue de ADMINN-EMA y su autorización Firebase siguen pendientes.
 
 ## 1. Visión y marca
 
