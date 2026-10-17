@@ -4,12 +4,21 @@
 **Repositorio:** [EMA](https://github.com/martin30eler-sketch/EMA)  
 **Documento de planificación:** [PLAN_MAESTRO_EMA.md](./PLAN_MAESTRO_EMA.md)  
 **Fecha de apertura del historial:** 2026-10-16  
-**Última actualización registrada:** 2026-10-16  
-**Estado actual:** **Web estática Vite con biblioteca y lector implementados; CI superado; Pages aún no desplegado.**
+**Última actualización registrada:** 2026-10-17  
+**Estado actual:** **Web estática Vite desplegada en Cloudflare Pages y conectada a GitHub/main; biblioteca sin libros publicados.**
 
 Este archivo es la **bitácora cronológica del trabajo real** realizado en el repositorio. Su propósito es permitir saber qué se hizo, por qué se hizo, qué falta, cómo se comprobó y dónde localizar cada cambio. No equivale a un cronograma ni sustituye el plan maestro.
 
 ## Registro cronológico
+
+### 2026-10-17 — Hito 004: Primer despliegue Cloudflare Pages de EMA
+- **Completado por el propietario:** conectar GitHub `martin30eler-sketch/EMA` a Cloudflare Pages y ejecutar primer despliegue en producción.
+- **URL pública:** https://ema-85p.pages.dev/ ; proyecto Pages `ema`, rama `main`.
+- **Configuración:** preset `Ninguno` (Vite sin preset), comando `npm run build`, salida `dist`, raíz predeterminada.
+- **Verificación:** Cloudflare API confirma origen GitHub, rama `main` y despliegue `success`, ID `c253c151-e3c9-4713-9f75-f9bb0caced7f`.
+- **Alcance:** web publicada, pero catálogo de libros vacío; todavía no se ha publicado el libro piloto ni conectado ADMINN-EMA.
+- **Pendiente:** publicación editorial autenticada y prueba extremo a extremo de textos e ilustraciones.
+
 
 ### 2026-10-16 — Hito 003: Primer sitio público funcional en código
 - **Implementado:** Vite/JS/CSS, identidad editorial EMA, buscador, catálogo y lector de una página ilustrada a la vez, efecto de transición en perspectiva, avance/retroceso, narración SpeechSynthesis y progreso local.
