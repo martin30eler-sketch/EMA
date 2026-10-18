@@ -26,11 +26,18 @@ export function validateCatalog(input) {
 }
 
 export function validateBook(book, entry) {
-  if (!book || book.schemaVersion !== 1 || book.id !== entry.id ||
+  if (!book || ![1,2].includes(book.schemaVersion) || book.id !== entry.id ||
       book.title !== entry.title || book.author !== entry.author ||
       book.cover !== entry.cover || !Array.isArray(book.pages) ||
       book.pages.length !== entry.pageCount) throw Error('El libro no coincide con el catálogo.');
   book.pages.forEach((page, index) => {
+    if (book.schemaVersion === 2) {
+      if (!page || page.number !== index + 1 || !Array.isArray(page.scenes) || !page.scenes.length || page.scenes.length > 8 ||
+          page.scenes.some(scene => !scene || !asset(book.id, scene.image) || typeof scene.text !== 'string' || !scene.text.trim())) {
+        throw Error('Falta texto editable o ilustración en la página ' + (index + 1) + '.');
+      }
+      return;
+    }
     if (!page || page.number !== index + 1 || typeof page.text !== 'string' ||
         !page.text.trim() || !asset(book.id, page.image)) {
       throw Error('Falta texto o ilustración en la página ' + (index + 1) + '.');
