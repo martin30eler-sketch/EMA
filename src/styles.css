@@ -245,3 +245,31 @@
   .reader-modes-trigger{width:38px;height:36px;font-size:13px}
   .reader-modes{min-width:38px}
 }
+
+
+/* Diseño editorial integrado: ilustración completa y narración encajada al pie.
+   La imagen y el texto permanecen elementos independientes. */
+.illustrated-scene:has(.caption-integrated){
+  display:flex;flex-direction:column;background:#f6f1e8;
+}
+.illustrated-scene:has(.caption-integrated) .scene-image{
+  position:relative;inset:auto;display:block;flex:1 1 0;
+  width:100%;height:0;min-height:0;max-height:none;object-fit:cover;
+}
+.illustrated-scene .scene-caption.caption-integrated{
+  position:relative;inset:auto;left:auto;right:auto;top:auto;
+  display:block;flex:0 0 auto;width:100%;max-width:none;
+  max-height:44%;overflow-y:auto;
+  margin:0;padding:9px 14px;border-radius:0;border:0;
+  background:linear-gradient(180deg,#fbf8f1 0%,#f4eddf 100%);
+  box-shadow:inset 0 2px 0 #e2d8c5;
+  color:#27392e;font:clamp(12px,2.9vw,15px)/1.32 Georgia,serif;
+  white-space:pre-wrap;overflow-wrap:anywhere;
+}
+@media(max-width:680px){
+  .illustrated-scene .scene-caption.caption-integrated{
+    padding:7px 11px;max-height:46%;
+    font:clamp(11px,3.15vw,14px)/1.27 Georgia,serif;
+  }
+}
+
