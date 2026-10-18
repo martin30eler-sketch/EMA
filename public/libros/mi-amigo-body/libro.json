@@ -14,8 +14,8 @@
           "image": "/libros/mi-amigo-body/escena-001.jpg",
           "layout": {
             "x": 0,
-            "y": 32.1,
-            "width": 52,
+            "y": 0,
+            "width": 55,
             "fontSize": 12
           }
         },
@@ -23,9 +23,9 @@
           "text": "Encontró a un cachorro dorado, mojado por la lluvia. —Hola, pequeño. ¿Dónde está tu familia? —preguntó Hans. Lo envolvió en su chaqueta y lo llevó a casa.",
           "image": "/libros/mi-amigo-body/escena-002.jpg",
           "layout": {
-            "x": 48,
-            "y": 32.1,
-            "width": 52,
+            "x": 54,
+            "y": 38.6,
+            "width": 46,
             "fontSize": 12
           }
         },
@@ -34,8 +34,8 @@
           "image": "/libros/mi-amigo-body/escena-003.jpg",
           "layout": {
             "x": 0,
-            "y": 45.6,
-            "width": 52,
+            "y": 61.3,
+            "width": 85,
             "fontSize": 12
           }
         }
