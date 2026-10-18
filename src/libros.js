@@ -8,6 +8,10 @@ const asset = (id, name) => typeof name === 'string' &&
   !name.includes('?') && !name.includes('#') && !name.includes('\\');
 
 const titleOK = value => typeof value === 'string' && value.trim().length > 0 && value.length <= 240;
+const layoutOK = layout => layout == null || (typeof layout === 'object' && !Array.isArray(layout) &&
+  [['x',0,95],['y',0,95],['width',25,90],['fontSize',10,24]].every(([key,min,max]) =>
+    typeof layout[key] === 'number' && Number.isFinite(layout[key]) && layout[key] >= min && layout[key] <= max) &&
+  layout.x + layout.width <= 100);
 
 export function validateCatalog(input) {
   if (!input || input.schemaVersion !== 1 || !Array.isArray(input.books)) throw Error('Catálogo incompatible.');
@@ -33,7 +37,7 @@ export function validateBook(book, entry) {
   book.pages.forEach((page, index) => {
     if (book.schemaVersion === 2) {
       if (!page || page.number !== index + 1 || !Array.isArray(page.scenes) || !page.scenes.length || page.scenes.length > 8 ||
-          page.scenes.some(scene => !scene || !asset(book.id, scene.image) || typeof scene.text !== 'string' || !scene.text.trim())) {
+          page.scenes.some(scene => !scene || !asset(book.id, scene.image) || typeof scene.text !== 'string' || !scene.text.trim() || !layoutOK(scene.layout))) {
         throw Error('Falta texto editable o ilustración en la página ' + (index + 1) + '.');
       }
       return;
