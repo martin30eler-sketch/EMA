@@ -74,17 +74,32 @@
         {
           "text": "Los años trajeron nuevas aventuras. Hans creció, pero nunca olvidó reservar tiempo para Body. Juntos conocieron montañas, ríos y caminos que parecían no tener fin.",
           "image": "/libros/mi-amigo-body/escena-006.jpg",
-          "layout": null
+          "layout": {
+            "x": 0,
+            "y": 0,
+            "width": 52,
+            "fontSize": 12
+          }
         },
         {
           "text": "Hans guardaba fotografías de cada viaje. En todas aparecía Body, siempre con aquella expresión alegre que tanto le gustaba.",
           "image": "/libros/mi-amigo-body/escena-007.jpg",
-          "layout": null
+          "layout": {
+            "x": 48,
+            "y": 54.1,
+            "width": 52,
+            "fontSize": 12
+          }
         },
         {
           "text": "Pero un otoño, Body comenzó a cansarse. Ya no corría tan rápido. Hans comprendió que su amigo envejecía. —Ahora me toca cuidarte a mí —le prometió.",
           "image": "/libros/mi-amigo-body/escena-008.jpg",
-          "layout": null
+          "layout": {
+            "x": 0,
+            "y": 0,
+            "width": 52,
+            "fontSize": 12
+          }
         }
       ]
     },
