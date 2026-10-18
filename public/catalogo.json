@@ -8,6 +8,15 @@
       "pageCount": 7,
       "cover": "/libros/el-algoritmo-del-sol-de-medianoche/portada.jpg",
       "bookPath": "/libros/el-algoritmo-del-sol-de-medianoche/libro.json"
+    },
+    {
+      "id": "mi-amigo-body",
+      "title": "Mi amigo Body",
+      "author": "EMA Editorial",
+      "pageCount": 5,
+      "cover": "/libros/mi-amigo-body/portada.jpg",
+      "bookPath": "/libros/mi-amigo-body/libro.json",
+      "format": "gpt-escenas"
     }
   ]
 }
