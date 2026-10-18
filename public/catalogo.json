@@ -13,7 +13,7 @@
       "id": "mi-amigo-body",
       "title": "Mi amigo Body",
       "author": "EMA Editorial",
-      "pageCount": 5,
+      "pageCount": 7,
       "cover": "/libros/mi-amigo-body/portada.jpg",
       "bookPath": "/libros/mi-amigo-body/libro.json",
       "format": "gpt-escenas"
