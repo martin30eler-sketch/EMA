@@ -135,8 +135,7 @@ function renderContent(page) {
       const caption=el('p','scene-caption',scene.text);
       const integrated=scene.captionMode==='integrated';
       caption.classList.add(integrated?'caption-integrated':(i%2===0?'caption-left':'caption-right'));
-      if(integrated && scene.layout?.fontSize) caption.style.fontSize=scene.layout.fontSize+'px';
-      if(!integrated && scene.layout){
+      if(scene.layout){
         const {x,y,width,fontSize}=scene.layout;
         Object.assign(caption.style,{left:x+'%',right:'auto',top:y+'%',width:width+'%',
           maxWidth:'none',maxHeight:'calc('+(100-y)+'% - 6px)',fontSize:fontSize+'px'});
