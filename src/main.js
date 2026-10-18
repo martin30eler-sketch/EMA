@@ -2,7 +2,7 @@ import { validateCatalog, validateBook, readProgress, writeProgress } from './li
 import './styles.css';
 
 const app = document.getElementById('app');
-const state = { books: [], selected: null, page: 1, current: null, speech: false, moving: false };
+const state = { books: [], selected: null, page: 1, current: null, speech: false, moving: false, view: 'auto' };
 const reducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)');
 const el = (tag, className, text) => {
   const node = document.createElement(tag);
@@ -99,6 +99,7 @@ async function openBook(entry) {
     state.selected = book;
     state.page = readProgress(book.id, book.pages.length);
     state.current = entry;
+    state.view = 'auto';
     renderReader();
   } catch (error) {
     showLibrary('No se pudo abrir el libro: ' + error.message);
@@ -110,7 +111,7 @@ function utterPage() {
   const page = state.selected?.pages[state.page - 1];
   if (!page) return;
   stopVoice();
-  const speech = new SpeechSynthesisUtterance(page.text);
+  const speech = new SpeechSynthesisUtterance(bookPageText(page));
   speech.lang = 'es-ES';
   speech.rate = 0.95;
   speech.onend = () => { state.speech = false; updateVoiceButton(); };
@@ -123,10 +124,34 @@ function updateVoiceButton() {
   const b = document.getElementById('speak-btn');
   if (b) b.textContent = state.speech ? '■ Detener narración' : '♫ Escuchar página';
 }
+function bookPageText(page) { return Array.isArray(page.scenes) ? page.scenes.map(scene => scene.text).join(' ') : page.text; }
 function renderContent(page) {
+  if (Array.isArray(page.scenes)) {
+    const content = el('article','page-content illustrated-page');
+    if (page.chapterTitle) content.append(el('h2','illustrated-chapter',page.chapterTitle));
+    page.scenes.forEach((scene,i)=>{
+      const frame=el('section','illustrated-scene');
+      frame.append(createImg(scene.image,'Escena '+(i+1)+' de la página '+page.number,'scene-image'));
+      const caption=el('p','scene-caption',scene.text);
+      caption.classList.add(i%2===0?'caption-left':'caption-right');
+      frame.append(caption);content.append(frame);
+    });
+    return content;
+  }
   const content = el('article', 'page-content');
   content.append(createImg(page.image, 'Ilustración de la página ' + page.number, 'page-image'),
     el('p', 'page-text', page.text));
+  return content;
+}
+function renderLegacyIllustrated(page) {
+  const content=el('article','page-content illustrated-page');
+  const frame=el('section','illustrated-scene');
+  frame.append(createImg(page.image,'Ilustración página '+page.number,'scene-image'),el('p','scene-caption caption-left',page.text));
+  content.append(frame);return content;
+}
+function renderSceneClassic(page) {
+  const content=el('article','page-content classic-multiscene');
+  page.scenes.forEach((scene,i)=>{const section=el('section','classic-scene');section.append(createImg(scene.image,'Escena '+(i+1),'page-image'),el('p','page-text',scene.text));content.append(section);});
   return content;
 }
 function turnTo(next) {
@@ -159,11 +184,20 @@ function renderReader() {
   heading.append(el('p', 'eyebrow', book.author), el('h1', '', book.title));
   top.append(heading);
   main.append(top);
+  const viewBar=el('div','reader-view-switch');
+  const formatLabel=el('span','view-format',book.schemaVersion === 2 ? 'Creado en GPT · Escenas editables' : 'Importado de Gemini Storybook');
+  viewBar.append(formatLabel);
+  [['auto','Automática'],['clasica','Clásica'],['ilustrada','Ilustrada']].forEach(([value,label])=>{
+    const b=button(label,'view-choice'+(state.view===value?' selected':''),()=>{stopVoice();state.view=value;renderReader();});
+    b.setAttribute('aria-pressed',String(state.view===value));viewBar.append(b);
+  });
+  main.append(viewBar);
   const area = el('section', 'reading-area');
   area.setAttribute('aria-label', 'Lector de historias');
   const canvas = el('div', 'book-perspective');
   const paper = el('div', 'flip-sheet');
-  paper.append(renderContent(page));
+  const view = state.view === 'auto' ? (book.schemaVersion === 2 ? 'ilustrada' : 'clasica') : state.view;
+  paper.append(view === 'ilustrada' && book.schemaVersion === 1 ? renderLegacyIllustrated(page) : view === 'clasica' && book.schemaVersion === 2 ? renderSceneClassic(page) : renderContent(page));
   canvas.append(paper);
   area.append(canvas);
   main.append(area);
@@ -181,7 +215,7 @@ function renderReader() {
     speak.id = 'speak-btn';
     main.append(speak, el('p', 'reader-hint', 'Narración automática del dispositivo · No se ha publicado un audio original para esta historia.'));
   }
-  const following = book.pages[state.page]?.image;
+  const following = book.pages[state.page]?.image || book.pages[state.page]?.scenes?.[0]?.image;
   if (following) { const preload = new Image(); preload.src = following; }
 }
 document.addEventListener('keydown', event => {
