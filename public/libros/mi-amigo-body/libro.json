@@ -14,7 +14,7 @@
           "image": "/libros/mi-amigo-body/escena-001.jpg",
           "layout": {
             "x": 0,
-            "y": 18.8,
+            "y": 32.1,
             "width": 52,
             "fontSize": 12
           }
@@ -24,7 +24,7 @@
           "image": "/libros/mi-amigo-body/escena-002.jpg",
           "layout": {
             "x": 48,
-            "y": 28.2,
+            "y": 32.1,
             "width": 52,
             "fontSize": 12
           }
@@ -34,7 +34,7 @@
           "image": "/libros/mi-amigo-body/escena-003.jpg",
           "layout": {
             "x": 0,
-            "y": 37.6,
+            "y": 45.6,
             "width": 52,
             "fontSize": 12
           }
