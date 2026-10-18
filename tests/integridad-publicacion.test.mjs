@@ -23,7 +23,7 @@ test('ningún libro publicado tiene páginas o imágenes ausentes', () => {
     const path = local(entry.bookPath);
     assert.ok(existsSync(path), 'Libro faltante: '+entry.id);
     const book = validateBook(JSON.parse(readFileSync(path,'utf8')),entry);
-    const assets = [book.cover, ...book.pages.map(page=>page.image)];
+    const assets = [book.cover, ...book.pages.flatMap(page => book.schemaVersion === 2 ? page.scenes.map(scene => scene.image) : [page.image])];
     assert.equal(new Set(assets).size,assets.length,'Imágenes duplicadas');
     for (const asset of assets) {
       const filename = local(asset);
