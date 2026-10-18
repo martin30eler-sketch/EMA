@@ -13,20 +13,20 @@
           "text": "Hans tenía catorce años y vivía en un pequeño pueblo rodeado de montañas. Aunque tenía amigos, muchas tardes se sentía solo. Una tarde escuchó un gemido detrás de un banco.",
           "image": "/libros/mi-amigo-body/escena-001.jpg",
           "layout": {
-            "x": 2,
-            "y": 3,
-            "width": 40,
-            "fontSize": 13
+            "x": 0,
+            "y": 18.8,
+            "width": 52,
+            "fontSize": 12
           }
         },
         {
           "text": "Encontró a un cachorro dorado, mojado por la lluvia. —Hola, pequeño. ¿Dónde está tu familia? —preguntó Hans. Lo envolvió en su chaqueta y lo llevó a casa.",
           "image": "/libros/mi-amigo-body/escena-002.jpg",
           "layout": {
-            "x": 58,
-            "y": 0,
-            "width": 39,
-            "fontSize": 13
+            "x": 46,
+            "y": 3,
+            "width": 52,
+            "fontSize": 12
           }
         },
         {
@@ -35,8 +35,8 @@
           "layout": {
             "x": 2,
             "y": 3,
-            "width": 38,
-            "fontSize": 13
+            "width": 52,
+            "fontSize": 12
           }
         }
       ]
