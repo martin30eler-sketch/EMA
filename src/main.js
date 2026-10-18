@@ -134,6 +134,11 @@ function renderContent(page) {
       frame.append(createImg(scene.image,'Escena '+(i+1)+' de la página '+page.number,'scene-image'));
       const caption=el('p','scene-caption',scene.text);
       caption.classList.add(i%2===0?'caption-left':'caption-right');
+      if(scene.layout){
+        const {x,y,width,fontSize}=scene.layout;
+        Object.assign(caption.style,{left:x+'%',right:'auto',top:y+'%',width:width+'%',
+          maxWidth:'none',maxHeight:'calc('+(100-y)+'% - 6px)',fontSize:fontSize+'px'});
+      }
       frame.append(caption);content.append(frame);
     });
     return content;
