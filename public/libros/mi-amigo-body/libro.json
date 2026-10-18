@@ -24,7 +24,7 @@
           "image": "/libros/mi-amigo-body/escena-002.jpg",
           "layout": {
             "x": 48,
-            "y": 38.6,
+            "y": 32.1,
             "width": 52,
             "fontSize": 12
           }
@@ -48,12 +48,22 @@
         {
           "text": "Los meses pasaron y Body creció. Todas las mañanas esperaba a Hans junto a la puerta. Corrían por senderos y exploraban montañas. Donde estaba Hans, estaba Body.",
           "image": "/libros/mi-amigo-body/escena-004.jpg",
-          "layout": null
+          "layout": {
+            "x": 0,
+            "y": 59.1,
+            "width": 52,
+            "fontSize": 12
+          }
         },
         {
           "text": "Una noche de verano, Hans miró las estrellas con Body. —Cuando sea mayor, quiero conocer el mundo. ¿Vendrás conmigo? Body apoyó la cabeza en su pecho. —Lo tomaré como un sí.",
           "image": "/libros/mi-amigo-body/escena-005.jpg",
-          "layout": null
+          "layout": {
+            "x": 48,
+            "y": 8.3,
+            "width": 52,
+            "fontSize": 12
+          }
         }
       ]
     },
