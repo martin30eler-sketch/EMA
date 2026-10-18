@@ -17,7 +17,8 @@
             "y": 0,
             "width": 55,
             "fontSize": 12
-          }
+          },
+          "captionMode": "integrated"
         },
         {
           "text": "Encontró a un cachorro dorado, mojado por la lluvia. —Hola, pequeño. ¿Dónde está tu familia? —preguntó Hans. Lo envolvió en su chaqueta y lo llevó a casa.",
@@ -27,17 +28,8 @@
             "y": 38.6,
             "width": 46,
             "fontSize": 12
-          }
-        },
-        {
-          "text": "Después de darle comida, Hans sonrió. —Creo que te llamaré Body. El cachorro le lamió la cara. Hacía mucho tiempo que Hans no se reía así.",
-          "image": "/libros/mi-amigo-body/escena-003.jpg",
-          "layout": {
-            "x": 0,
-            "y": 61.3,
-            "width": 85,
-            "fontSize": 12
-          }
+          },
+          "captionMode": "integrated"
         }
       ]
     },
@@ -46,6 +38,17 @@
       "chapterTitle": "Capítulo 1 · Un encuentro especial",
       "scenes": [
         {
+          "text": "Después de darle comida, Hans sonrió. —Creo que te llamaré Body. El cachorro le lamió la cara. Hacía mucho tiempo que Hans no se reía así.",
+          "image": "/libros/mi-amigo-body/escena-003.jpg",
+          "layout": {
+            "x": 0,
+            "y": 61.3,
+            "width": 85,
+            "fontSize": 12
+          },
+          "captionMode": "integrated"
+        },
+        {
           "text": "Los meses pasaron y Body creció. Todas las mañanas esperaba a Hans junto a la puerta. Corrían por senderos y exploraban montañas. Donde estaba Hans, estaba Body.",
           "image": "/libros/mi-amigo-body/escena-004.jpg",
           "layout": {
@@ -53,8 +56,15 @@
             "y": 59.1,
             "width": 52,
             "fontSize": 12
-          }
-        },
+          },
+          "captionMode": "integrated"
+        }
+      ]
+    },
+    {
+      "number": 3,
+      "chapterTitle": "Capítulo 1 · Un encuentro especial",
+      "scenes": [
         {
           "text": "Una noche de verano, Hans miró las estrellas con Body. —Cuando sea mayor, quiero conocer el mundo. ¿Vendrás conmigo? Body apoyó la cabeza en su pecho. —Lo tomaré como un sí.",
           "image": "/libros/mi-amigo-body/escena-005.jpg",
@@ -63,12 +73,13 @@
             "y": 8.6,
             "width": 52,
             "fontSize": 12
-          }
+          },
+          "captionMode": "integrated"
         }
       ]
     },
     {
-      "number": 3,
+      "number": 4,
       "chapterTitle": "Capítulo 2 · Siempre en mi corazón",
       "scenes": [
         {
@@ -79,7 +90,8 @@
             "y": 0,
             "width": 52,
             "fontSize": 12
-          }
+          },
+          "captionMode": "integrated"
         },
         {
           "text": "Hans guardaba fotografías de cada viaje. En todas aparecía Body, siempre con aquella expresión alegre que tanto le gustaba.",
@@ -89,33 +101,8 @@
             "y": 54.1,
             "width": 52,
             "fontSize": 12
-          }
-        },
-        {
-          "text": "Pero un otoño, Body comenzó a cansarse. Ya no corría tan rápido. Hans comprendió que su amigo envejecía. —Ahora me toca cuidarte a mí —le prometió.",
-          "image": "/libros/mi-amigo-body/escena-008.jpg",
-          "layout": {
-            "x": 0,
-            "y": 0,
-            "width": 52,
-            "fontSize": 12
-          }
-        }
-      ]
-    },
-    {
-      "number": 4,
-      "chapterTitle": "Capítulo 2 · Siempre en mi corazón",
-      "scenes": [
-        {
-          "text": "Llegó un invierno especialmente frío. Body estaba muy débil. Hans colocó su cama junto a la chimenea y pasó las tardes acompañándolo, recordando sus aventuras.",
-          "image": "/libros/mi-amigo-body/escena-009.jpg",
-          "layout": null
-        },
-        {
-          "text": "Una noche, Hans acarició suavemente su pelaje. —Gracias por encontrarme aquel día. Fuiste mi mejor amigo. Body apoyó la cabeza en su mano y cerró los ojos por última vez.",
-          "image": "/libros/mi-amigo-body/escena-010.jpg",
-          "layout": null
+          },
+          "captionMode": "integrated"
         }
       ]
     },
@@ -124,14 +111,51 @@
       "chapterTitle": "Capítulo 2 · Siempre en mi corazón",
       "scenes": [
         {
+          "text": "Pero un otoño, Body comenzó a cansarse. Ya no corría tan rápido. Hans comprendió que su amigo envejecía. —Ahora me toca cuidarte a mí —le prometió.",
+          "image": "/libros/mi-amigo-body/escena-008.jpg",
+          "layout": {
+            "x": 0,
+            "y": 0,
+            "width": 52,
+            "fontSize": 12
+          },
+          "captionMode": "integrated"
+        },
+        {
+          "text": "Llegó un invierno especialmente frío. Body estaba muy débil. Hans colocó su cama junto a la chimenea y pasó las tardes acompañándolo, recordando sus aventuras.",
+          "image": "/libros/mi-amigo-body/escena-009.jpg",
+          "layout": null,
+          "captionMode": "integrated"
+        }
+      ]
+    },
+    {
+      "number": 6,
+      "chapterTitle": "Capítulo 2 · Siempre en mi corazón",
+      "scenes": [
+        {
+          "text": "Una noche, Hans acarició suavemente su pelaje. —Gracias por encontrarme aquel día. Fuiste mi mejor amigo. Body apoyó la cabeza en su mano y cerró los ojos por última vez.",
+          "image": "/libros/mi-amigo-body/escena-010.jpg",
+          "layout": null,
+          "captionMode": "integrated"
+        },
+        {
           "text": "Semanas después, Hans abrió una caja con fotografías, una pelota y el collar azul de Body. Recordó las risas y las aventuras. Entre las lágrimas apareció una sonrisa.",
           "image": "/libros/mi-amigo-body/escena-011.jpg",
-          "layout": null
-        },
+          "layout": null,
+          "captionMode": "integrated"
+        }
+      ]
+    },
+    {
+      "number": 7,
+      "chapterTitle": "Capítulo 2 · Siempre en mi corazón",
+      "scenes": [
         {
           "text": "Al atardecer, Hans subió a su colina favorita. —Llevaré nuestros recuerdos a cada lugar que visite. Comprendió que algunos amigos dejan huellas que permanecen para siempre.",
           "image": "/libros/mi-amigo-body/escena-012.jpg",
-          "layout": null
+          "layout": null,
+          "captionMode": "integrated"
         }
       ]
     }
