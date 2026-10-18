@@ -148,3 +148,100 @@
   .illustrated-scene .scene-caption {font-size:10px;line-height:1.15;padding:4px 6px}
   .reader-main .listen-btn {padding:4px 12px}
 }
+
+
+/* Cabecera del lector: atrás, título centrado y modos de lectura desplegables. */
+.reader-main .reader-top{
+  display:grid;
+  grid-template-columns:48px minmax(0,1fr) 48px;
+  align-items:center;
+  gap:5px;
+  margin:8px 0 12px;
+  position:relative;
+  z-index:10;
+}
+.reader-main .reader-top .back-btn{
+  float:none;
+  padding:6px 4px;
+  width:44px;
+  min-height:38px;
+  font-size:24px;
+  line-height:1;
+  text-align:center;
+  border-radius:8px;
+}
+.reader-main .reader-top .reader-heading{
+  min-width:0;
+  padding:0;
+  text-align:center;
+  clear:none;
+}
+.reader-main .reader-top .reader-heading h1{
+  margin:0;
+  font:400 clamp(18px,3vw,31px)/1.18 Georgia,serif;
+  white-space:nowrap;
+  overflow:hidden;
+  text-overflow:ellipsis;
+}
+.reader-modes{position:relative;justify-self:end;min-width:44px}
+.reader-modes-trigger{
+  list-style:none;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  width:44px;
+  height:38px;
+  padding:5px;
+  border:1px solid #a8b6a8;
+  border-radius:9px;
+  color:#275841;
+  background:#fffdf9;
+  cursor:pointer;
+  font:600 14px system-ui,sans-serif;
+  white-space:nowrap;
+}
+.reader-modes-trigger::-webkit-details-marker{display:none}
+.reader-modes-trigger::marker{content:''}
+.reader-modes[open] .reader-modes-trigger{background:#e4eee5}
+.reader-modes-menu{
+  position:absolute;
+  right:0;
+  top:calc(100% + 6px);
+  z-index:50;
+  width:185px;
+  padding:8px;
+  background:#fffefa;
+  border:1px solid #c9d7c9;
+  border-radius:12px;
+  box-shadow:0 10px 30px #1b30283b;
+}
+.reader-modes-label{
+  margin:4px 8px 8px;
+  color:#617667;
+  font:600 12px system-ui,sans-serif;
+}
+.reader-mode-option{
+  display:block;
+  width:100%;
+  padding:10px 11px;
+  text-align:left;
+  border:0;
+  border-radius:7px;
+  background:transparent;
+  color:#28533c;
+  font-size:14px;
+}
+.reader-mode-option:hover,.reader-mode-option:focus-visible{background:#edf4ed}
+.reader-mode-option.selected{background:#dfece0;font-weight:700}
+@media(max-width:680px){
+  .reader-main .reader-top{
+    grid-template-columns:40px minmax(0,1fr) 40px;
+    gap:2px;
+    min-height:38px;
+    margin:0 0 5px;
+  }
+  .reader-main .reader-top .back-btn{width:38px;min-height:36px;font-size:22px}
+  .reader-main .reader-top .reader-heading h1{font-size:clamp(16px,4.4vw,22px)}
+  .reader-modes-trigger{width:38px;height:36px;font-size:13px}
+  .reader-modes{min-width:38px}
+}
