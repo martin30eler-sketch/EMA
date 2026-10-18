@@ -184,19 +184,30 @@ function renderReader() {
   const main = shell();
   main.classList.add('reader-main');
   const top = el('div', 'reader-top');
-  top.append(button('← Biblioteca', 'back-btn', showLibrary));
+  const back = button('←', 'back-btn', showLibrary);
+  back.setAttribute('aria-label', 'Volver a la biblioteca');
+  back.title = 'Volver a la biblioteca';
+  top.append(back);
   const heading = el('div', 'reader-heading');
   heading.append(el('p', 'eyebrow', book.author), el('h1', '', book.title));
   top.append(heading);
-  main.append(top);
-  const viewBar=el('div','reader-view-switch');
-  const formatLabel=el('span','view-format',book.schemaVersion === 2 ? 'Creado en GPT · Escenas editables' : 'Importado de Gemini Storybook');
-  viewBar.append(formatLabel);
+  const modes = el('details', 'reader-modes');
+  const trigger = el('summary', 'reader-modes-trigger', 'Aa ▾');
+  trigger.setAttribute('aria-label', 'Modos de lectura');
+  trigger.title = 'Modos de lectura';
+  modes.append(trigger);
+  const menu = el('div', 'reader-modes-menu');
+  menu.append(el('p', 'reader-modes-label', 'Modo de lectura'));
   [['auto','Automática'],['clasica','Clásica'],['ilustrada','Ilustrada']].forEach(([value,label])=>{
-    const b=button(label,'view-choice'+(state.view===value?' selected':''),()=>{stopVoice();state.view=value;renderReader();});
-    b.setAttribute('aria-pressed',String(state.view===value));viewBar.append(b);
+    const option=button((state.view===value?'✓  ':'')+label,'reader-mode-option'+(state.view===value?' selected':''),()=>{
+      stopVoice();state.view=value;renderReader();
+    });
+    option.setAttribute('aria-pressed',String(state.view===value));
+    menu.append(option);
   });
-  main.append(viewBar);
+  modes.append(menu);
+  top.append(modes);
+  main.append(top);
   const area = el('section', 'reading-area');
   area.setAttribute('aria-label', 'Lector de historias');
   const canvas = el('div', 'book-perspective');
