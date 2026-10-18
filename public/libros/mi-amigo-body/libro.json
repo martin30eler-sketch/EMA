@@ -23,8 +23,8 @@
           "text": "Encontró a un cachorro dorado, mojado por la lluvia. —Hola, pequeño. ¿Dónde está tu familia? —preguntó Hans. Lo envolvió en su chaqueta y lo llevó a casa.",
           "image": "/libros/mi-amigo-body/escena-002.jpg",
           "layout": {
-            "x": 46,
-            "y": 3,
+            "x": 48,
+            "y": 28.2,
             "width": 52,
             "fontSize": 12
           }
@@ -33,8 +33,8 @@
           "text": "Después de darle comida, Hans sonrió. —Creo que te llamaré Body. El cachorro le lamió la cara. Hacía mucho tiempo que Hans no se reía así.",
           "image": "/libros/mi-amigo-body/escena-003.jpg",
           "layout": {
-            "x": 2,
-            "y": 3,
+            "x": 0,
+            "y": 37.6,
             "width": 52,
             "fontSize": 12
           }
