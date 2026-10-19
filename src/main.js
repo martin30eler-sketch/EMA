@@ -288,6 +288,7 @@ document.addEventListener('keydown', event => {
   if (event.key === 'ArrowLeft') { event.preventDefault(); turnTo(state.page - 1); }
   if (event.key === 'Escape') showLibrary();
 });
+desktopSpread.addEventListener('change',()=>{ if(state.selected&&!state.moving)renderReader(); });
 async function start() {
   showLibrary();
   try {
