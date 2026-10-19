@@ -36,7 +36,7 @@ export function validateBook(book, entry) {
       book.pages.length !== entry.pageCount) throw Error('El libro no coincide con el catálogo.');
   book.pages.forEach((page, index) => {
     if (book.schemaVersion === 2) {
-      if (!page || page.number !== index + 1 || !Array.isArray(page.scenes) || !page.scenes.length || page.scenes.length > 8 ||
+      if (!page || page.number !== index + 1 || !Array.isArray(page.scenes) || !page.scenes.length || page.scenes.length > 2 ||
           page.scenes.some(scene => !scene || !asset(book.id, scene.image) || typeof scene.text !== 'string' || !scene.text.trim() || !layoutOK(scene.layout) || ![undefined,'integrated','floating'].includes(scene.captionMode))) {
         throw Error('Falta texto editable o ilustración en la página ' + (index + 1) + '.');
       }
