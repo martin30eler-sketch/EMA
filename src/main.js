@@ -48,6 +48,7 @@ function stopVoice() {
 function showLibrary(message) {
   stopVoice();
   state.selected = null;
+  state.moving = false;
   const main = shell();
   const hero = el('section', 'hero');
   hero.append(el('p', 'eyebrow', 'Biblioteca digital de EMA'), el('h1', '', 'Historias que cobran vida'),
