@@ -192,6 +192,7 @@ function turnTo(next) {
   state.moving = true;
   stopVoice();
   const finish = () => {
+    if(state.selected !== book)return;
     state.page = next;
     writeProgress(book.id, next);
     state.moving = false;
