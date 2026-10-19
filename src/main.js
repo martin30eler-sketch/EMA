@@ -203,10 +203,19 @@ function turnTo(next) {
     const turning = right.cloneNode(true);
     turning.classList.add('spread-turning-leaf',next > old ? 'leaf-forward' : 'leaf-backward');
     turning.setAttribute('aria-hidden','true');
+    turning.querySelectorAll('[id]').forEach(node=>node.removeAttribute('id'));
     spread.append(turning);
-    const done = () => { turning.remove(); finish(); };
-    turning.addEventListener('animationend',done,{once:true});
-    setTimeout(()=>{if(turning.isConnected)done();},650);
+    let finished=false;
+    const done=()=>{
+      if(finished)return;
+      finished=true;
+      turning.remove();
+      finish();
+    };
+    turning.addEventListener('animationend',event=>{
+      if(event.target===turning)done();
+    },{once:true});
+    setTimeout(done,750);
     return;
   }
   sheet.classList.add(next > old ? 'turn-forward' : 'turn-backward');
