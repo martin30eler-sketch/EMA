@@ -370,7 +370,7 @@
   }
   .spread-picture:last-child,.spread-narrative:last-child{border-bottom:0}
   .spread-image{display:block;width:100%;height:100%;object-fit:cover;object-position:center}
-  .spread-narrative{display:flex;align-items:center;padding:clamp(14px,2.5vw,34px);overflow-y:auto}
+  .spread-narrative{display:flex;align-items:flex-start;padding:clamp(14px,2.5vw,34px);overflow-y:auto;overscroll-behavior:contain;scrollbar-gutter:stable}
   .spread-text{
     margin:0;
     width:100%;
