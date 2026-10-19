@@ -380,3 +380,42 @@
     overflow-wrap:anywhere;
   }
 }
+
+/* Animación de libro abierto: únicamente la hoja derecha se dobla.
+   La mitad izquierda permanece inmóvil durante el cambio de página. */
+@media (min-width:681px){
+  .desktop-spread{position:relative;perspective:1600px;overflow:visible}
+  .spread-turning-leaf{
+    position:absolute;
+    top:0;
+    right:0;
+    width:50%;
+    height:100%;
+    z-index:5;
+    pointer-events:none;
+    transform-style:preserve-3d;
+    backface-visibility:visible;
+    box-shadow:-5px 0 18px #2b241f24;
+  }
+  .spread-turning-leaf.leaf-forward{
+    transform-origin:left center;
+    animation:ema-leaf-forward .56s cubic-bezier(.45,.02,.25,1) forwards;
+  }
+  .spread-turning-leaf.leaf-backward{
+    transform-origin:left center;
+    animation:ema-leaf-backward .56s cubic-bezier(.25,.02,.45,1) forwards;
+  }
+  @keyframes ema-leaf-forward{
+    0%{transform:rotateY(0deg);opacity:1}
+    85%{opacity:.94}
+    100%{transform:rotateY(-178deg);opacity:.78}
+  }
+  @keyframes ema-leaf-backward{
+    0%{transform:rotateY(-178deg);opacity:.78}
+    15%{opacity:.94}
+    100%{transform:rotateY(0deg);opacity:1}
+  }
+}
+@media (prefers-reduced-motion:reduce){
+  .spread-turning-leaf{animation:none!important}
+}
