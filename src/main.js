@@ -99,6 +99,7 @@ async function openBook(entry) {
     if (!res.ok) throw Error('El archivo del libro no está disponible (' + res.status + ').');
     const book = validateBook(await res.json(), entry);
     state.selected = book;
+    state.moving = false;
     state.page = readProgress(book.id, book.pages.length);
     state.current = entry;
     state.view = 'auto';
