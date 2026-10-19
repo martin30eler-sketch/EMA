@@ -332,7 +332,7 @@
   .reader-main:has(.desktop-spread){max-width:1160px}
   .reader-main:has(.desktop-spread) .reading-area{padding:10px}
   .reader-main:has(.desktop-spread) .book-perspective{width:100%;max-width:none}
-  .flip-sheet:has(.desktop-spread){height:clamp(490px,72vh,760px)}
+  .flip-sheet:has(.desktop-spread){height:clamp(490px,72vh,760px);overflow:visible;backface-visibility:visible}
   .desktop-spread{
     display:grid;
     grid-template-columns:minmax(0,1fr) minmax(0,1fr);
