@@ -164,6 +164,9 @@ function renderDesktopSpread(page) {
     picture.append(createImg(scene.image,'Ilustración '+(i+1)+' de la página '+page.number,'spread-image'));
     pictures.append(picture);
     const narrative=el('div','spread-narrative');
+    narrative.setAttribute('tabindex','0');
+    narrative.setAttribute('role','region');
+    narrative.setAttribute('aria-label','Narración '+(i+1)+' de '+page.scenes.length);
     narrative.append(el('p','spread-text',scene.text));
     stories.append(narrative);
   });
