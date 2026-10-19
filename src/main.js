@@ -4,6 +4,7 @@ import './styles.css';
 const app = document.getElementById('app');
 const state = { books: [], selected: null, page: 1, current: null, speech: false, moving: false, view: 'auto' };
 const reducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)');
+const desktopSpread = window.matchMedia('(min-width: 681px)');
 const el = (tag, className, text) => {
   const node = document.createElement(tag);
   if (className) node.className = className;
@@ -260,7 +261,7 @@ function renderReader() {
   const canvas = el('div', 'book-perspective');
   const paper = el('div', 'flip-sheet');
   const view = state.view === 'auto' ? (book.schemaVersion === 2 ? 'ilustrada' : 'clasica') : state.view;
-  paper.append(view === 'ilustrada' && book.schemaVersion === 2 && window.matchMedia('(min-width: 681px)').matches ? renderDesktopSpread(page) : view === 'ilustrada' && book.schemaVersion === 1 ? renderLegacyIllustrated(page) : view === 'clasica' && book.schemaVersion === 2 ? renderSceneClassic(page) : renderContent(page));
+  paper.append(view === 'ilustrada' && book.schemaVersion === 2 && desktopSpread.matches ? renderDesktopSpread(page) : view === 'ilustrada' && book.schemaVersion === 1 ? renderLegacyIllustrated(page) : view === 'clasica' && book.schemaVersion === 2 ? renderSceneClassic(page) : renderContent(page));
   canvas.append(paper);
   area.append(canvas);
   main.append(area);
