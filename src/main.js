@@ -149,6 +149,27 @@ function renderContent(page) {
     el('p', 'page-text', page.text));
   return content;
 }
+/** Libro abierto en escritorio: imágenes a la izquierda y narraciones
+ * correspondientes a la derecha, conservando el orden de las escenas. */
+function renderDesktopSpread(page) {
+  const spread=el('article','page-content desktop-spread');
+  const pictures=el('div','spread-pictures');
+  const stories=el('div','spread-stories');
+  if(page.chapterTitle) {
+    pictures.append(el('h2','spread-chapter',page.chapterTitle));
+    stories.append(el('h2','spread-chapter spread-chapter-right',page.chapterTitle));
+  }
+  page.scenes.forEach((scene,i)=>{
+    const picture=el('div','spread-picture');
+    picture.append(createImg(scene.image,'Ilustración '+(i+1)+' de la página '+page.number,'spread-image'));
+    pictures.append(picture);
+    const narrative=el('div','spread-narrative');
+    narrative.append(el('p','spread-text',scene.text));
+    stories.append(narrative);
+  });
+  spread.append(pictures,stories);
+  return spread;
+}
 function renderLegacyIllustrated(page) {
   const content=el('article','page-content illustrated-page');
   const frame=el('section','illustrated-scene');
@@ -214,7 +235,7 @@ function renderReader() {
   const canvas = el('div', 'book-perspective');
   const paper = el('div', 'flip-sheet');
   const view = state.view === 'auto' ? (book.schemaVersion === 2 ? 'ilustrada' : 'clasica') : state.view;
-  paper.append(view === 'ilustrada' && book.schemaVersion === 1 ? renderLegacyIllustrated(page) : view === 'clasica' && book.schemaVersion === 2 ? renderSceneClassic(page) : renderContent(page));
+  paper.append(view === 'ilustrada' && book.schemaVersion === 2 && window.matchMedia('(min-width: 681px)').matches ? renderDesktopSpread(page) : view === 'ilustrada' && book.schemaVersion === 1 ? renderLegacyIllustrated(page) : view === 'clasica' && book.schemaVersion === 2 ? renderSceneClassic(page) : renderContent(page));
   canvas.append(paper);
   area.append(canvas);
   main.append(area);
