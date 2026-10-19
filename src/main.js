@@ -196,6 +196,19 @@ function turnTo(next) {
   if (reducedMotion.matches) return finish();
   const sheet = document.querySelector('.flip-sheet');
   if (!sheet) return finish();
+  const spread = sheet.querySelector('.desktop-spread');
+  if (spread) {
+    const right = spread.querySelector('.spread-stories');
+    if (!right) return finish();
+    const turning = right.cloneNode(true);
+    turning.classList.add('spread-turning-leaf',next > old ? 'leaf-forward' : 'leaf-backward');
+    turning.setAttribute('aria-hidden','true');
+    spread.append(turning);
+    const done = () => { turning.remove(); finish(); };
+    turning.addEventListener('animationend',done,{once:true});
+    setTimeout(()=>{if(turning.isConnected)done();},650);
+    return;
+  }
   sheet.classList.add(next > old ? 'turn-forward' : 'turn-backward');
   setTimeout(finish, 480);
 }
