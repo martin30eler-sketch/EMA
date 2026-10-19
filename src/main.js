@@ -286,7 +286,7 @@ function renderReader() {
   if (following) { const preload = new Image(); preload.src = following; }
 }
 document.addEventListener('keydown', event => {
-  if (!state.selected || /INPUT|TEXTAREA|SELECT/.test(document.activeElement?.tagName || '') || document.activeElement?.closest('.spread-narrative')) return;
+  if (!state.selected || event.defaultPrevented || event.altKey || event.ctrlKey || event.metaKey || event.shiftKey || /INPUT|TEXTAREA|SELECT/.test(document.activeElement?.tagName || '') || document.activeElement?.closest('button, a, summary, .spread-narrative')) return;
   if (event.key === 'ArrowRight') { event.preventDefault(); turnTo(state.page + 1); }
   if (event.key === 'ArrowLeft') { event.preventDefault(); turnTo(state.page - 1); }
   if (event.key === 'Escape') showLibrary();
