@@ -282,7 +282,7 @@ function renderReader() {
   if (following) { const preload = new Image(); preload.src = following; }
 }
 document.addEventListener('keydown', event => {
-  if (!state.selected || /INPUT|TEXTAREA|SELECT/.test(document.activeElement?.tagName || '')) return;
+  if (!state.selected || /INPUT|TEXTAREA|SELECT/.test(document.activeElement?.tagName || '') || document.activeElement?.closest('.spread-narrative')) return;
   if (event.key === 'ArrowRight') { event.preventDefault(); turnTo(state.page + 1); }
   if (event.key === 'ArrowLeft') { event.preventDefault(); turnTo(state.page - 1); }
   if (event.key === 'Escape') showLibrary();
