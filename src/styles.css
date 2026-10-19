@@ -304,3 +304,24 @@
   }
   .flip-sheet:has(.illustrated-page){height:clamp(490px,72vh,760px)}
 }
+
+/* Lector de escritorio: el lienzo ilustrado ocupa el marco exterior,
+   eliminando el gran espacio beige entre la página y sus bordes. */
+@media (min-width:681px){
+  .reader-main:has(.illustrated-page){max-width:1160px}
+  .reader-main:has(.illustrated-page) .reading-area{
+    padding:10px;
+    display:flex;
+    align-items:stretch;
+  }
+  .reader-main:has(.illustrated-page) .book-perspective{
+    width:100%;
+    max-width:none;
+    flex:1 1 auto;
+    min-width:0;
+  }
+  .reader-main .flip-sheet:has(.illustrated-page){
+    width:100%;
+    height:clamp(490px,72vh,760px);
+  }
+}
