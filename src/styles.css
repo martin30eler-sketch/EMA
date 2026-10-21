@@ -429,3 +429,13 @@
 .reader-voice-controls .pause-btn[aria-pressed="true"]{background:#e4eadd;color:#214e37}
 @media(max-width:420px){.reader-voice-controls{gap:8px}
   .reader-voice-controls .listen-btn{font-size:12px;padding:10px 13px}}
+
+/* Lectura táctil: el deslizamiento horizontal pasa páginas solo fuera de textos.
+ * El movimiento vertical queda reservado para el scroll de narraciones.
+ */
+@media (max-width:680px){
+  .reader-main .reading-area{touch-action:pan-y}
+  .reader-main .scene-caption,.reader-main .spread-narrative,.reader-main .page-text{
+    touch-action:pan-y;overscroll-behavior-y:contain
+  }
+}
