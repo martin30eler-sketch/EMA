@@ -1,5 +1,6 @@
 import { validateCatalog, validateBook, readProgress, writeProgress } from './libros.js';
 import {createNarrator} from './narration.js';
+import {navigationAction} from './keyboard.js';
 import './styles.css';
 
 const app = document.getElementById('app');
@@ -313,11 +314,26 @@ function renderReader() {
   const following = book.pages[state.page]?.image || book.pages[state.page]?.scenes?.[0]?.image;
   if (following) { const preload = new Image(); preload.src = following; }
 }
-document.addEventListener('keydown', event => {
-  if (!state.selected || event.defaultPrevented || event.altKey || event.ctrlKey || event.metaKey || event.shiftKey || /INPUT|TEXTAREA|SELECT/.test(document.activeElement?.tagName || '') || document.activeElement?.closest('button, a, summary, .spread-narrative')) return;
-  if (event.key === 'ArrowRight') { event.preventDefault(); turnTo(state.page + 1); }
-  if (event.key === 'ArrowLeft') { event.preventDefault(); turnTo(state.page - 1); }
-  if (event.key === 'Escape') showLibrary();
+document.addEventListener('keydown',event=>{
+  if(!state.selected||event.defaultPrevented||event.altKey||event.ctrlKey||event.metaKey||event.shiftKey)return;
+  const action=navigationAction(event.key);
+  if(!action)return;
+  if(action==='exit'){
+    event.preventDefault();
+    const openMenu=document.querySelector('.reader-modes[open]');
+    if(openMenu){
+      openMenu.open=false;
+      openMenu.querySelector('summary')?.focus();
+    }else showLibrary();
+    return;
+  }
+  if(/INPUT|TEXTAREA|SELECT/.test(document.activeElement?.tagName||'')||
+     document.activeElement?.closest('button, a, summary, .spread-narrative, .scene-caption'))return;
+  event.preventDefault();
+  if(action==='next')turnTo(state.page+1);
+  else if(action==='previous')turnTo(state.page-1);
+  else if(action==='first')turnTo(1);
+  else if(action==='last')turnTo(state.selected.pages.length);
 });
 desktopSpread.addEventListener('change',()=>{ if(state.selected&&!state.moving)renderReader(); });
 async function start() {
