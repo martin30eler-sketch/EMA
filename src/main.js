@@ -1,6 +1,7 @@
 import { validateCatalog, validateBook, readProgress, writeProgress } from './libros.js';
 import {createNarrator} from './narration.js';
 import {navigationAction} from './keyboard.js';
+import {swipePageAction,isReaderSwipeTarget} from './swipe.js';
 import './styles.css';
 
 const app = document.getElementById('app');
@@ -276,6 +277,21 @@ function renderReader() {
   main.append(top);
   const area = el('section', 'reading-area');
   area.setAttribute('aria-label', 'Lector de historias');
+  // Móvil: pasar página horizontalmente, sin interceptar el scroll de narraciones.
+  let swipeStart=null;
+  area.addEventListener('pointerdown',event=>{
+    if(desktopSpread.matches||event.pointerType!=='touch'||!event.isPrimary||
+      !isReaderSwipeTarget(event.target)){swipeStart=null;return;}
+    swipeStart={pointerId:event.pointerId,x:event.clientX,y:event.clientY,time:event.timeStamp};
+  });
+  area.addEventListener('pointercancel',()=>{swipeStart=null;});
+  area.addEventListener('pointerup',event=>{
+    const start=swipeStart;swipeStart=null;
+    if(!start||start.pointerId!==event.pointerId||!state.selected)return;
+    const action=swipePageAction(start,{x:event.clientX,y:event.clientY,time:event.timeStamp});
+    if(action==='next')turnTo(state.page+1);
+    if(action==='previous')turnTo(state.page-1);
+  });
   const canvas = el('div', 'book-perspective');
   const paper = el('div', 'flip-sheet');
   const view = state.view === 'auto' ? (book.schemaVersion === 2 ? 'ilustrada' : 'clasica') : state.view;
