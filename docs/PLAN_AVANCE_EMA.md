@@ -71,3 +71,12 @@ Registrar aquí cada avance relevante, el commit, las pruebas efectuadas y lo pe
 - La arquitectura separa deliberadamente borradores privados en Cloudflare KV del catálogo y de los libros públicos bajo `EMA/public`. **No se agregó código de borradores privados al repositorio EMA**; solo debe recibir publicaciones aprobadas.
 - Para activar la sincronización aún falta vincular el binding `EMA_DRAFTS` al proyecto de Cloudflare correcto y verificar recuperación real entre dispositivos. Guía en `ADMINN-EMA/docs/BORRADORES_NUBE.md`.
 - Estado lector: conserva el contrato público v1/v2. Su verificación real en producción y las pruebas de navegación en móvil y escritorio siguen pendientes.
+
+## Auditoría de libros realmente publicados y cobertura de regresión · 21/10/2026
+- Se consultó `public/catalogo.json` desde GitHub y se validaron los libros `el-algoritmo-del-sol-de-medianoche` (v1, 7 páginas) y `mi-amigo-body` (v2, 7 páginas con 12 escenas).
+- Ambos contratos se validaron con el **mismo módulo `src/libros.js` de EMA**: IDs, títulos, autores, portada, páginas, escenas y layouts aceptados.
+- Se compararon todos los nombres de imagen del JSON con las entradas reales de sus carpetas GitHub: **0 imágenes faltantes y 0 archivos extra**, 8 imágenes en el primero y 13 en el segundo, portadas incluidas.
+- `6837398`: test permanente `tests/publicaciones-reales.test.mjs`: valida todos los libros del catálogo y sus archivos locales contra los contratos del lector, comprueba imágenes existentes y no vacías, y rechaza ilustraciones duplicadas o sobrantes.
+- **Ambos workflows de Actions pasaron pruebas y Vite build**: [Verificación web EMA](https://github.com/martin30eler-sketch/EMA/actions/runs/39656951211) y [Verificar EMA web](https://github.com/martin30eler-sketch/EMA/actions/runs/39656951315).
+- Cloudflare Pages del proyecto público `ema` reportó despliegue canónico exitoso de la versión anterior y está enlazado a `EMA/main`; confirmar la actualización del último commit antes de marcar despliegue de esta auditoría como concluido.
+- Sigue pendiente probar interacciones reales en navegadores móvil/tablet/escritorio y publicación nueva desde ADMINN-EMA.
