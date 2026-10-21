@@ -483,3 +483,21 @@
 .reader-chapter-option:hover,.reader-chapter-option:focus-visible{
  background:#edf4ed;outline:2px solid #a47f4b;outline-offset:-2px
 }
+
+/* Favoritos del navegador sin alterar la tarjeta editorial de apertura. */
+.library-filters{display:flex;align-items:center;gap:13px;min-height:44px;margin:-9px 0 23px;flex-wrap:wrap}
+.library-feedback{margin:0;color:#805331;font-size:13px}
+.favorites-filter{border:1px solid #a5b4a2;background:#fffdf9;color:#28533c;
+  min-height:40px;border-radius:999px;padding:8px 15px;font:600 13px system-ui,sans-serif}
+.favorites-filter[aria-pressed="true"]{background:#e0ece1;border-color:#66856d}
+.favorites-filter:hover{background:#edf4ed}
+.book-item{position:relative;min-width:0}
+.book-item .book-card{height:100%;width:100%}
+.favorite-toggle{
+ position:absolute;right:19px;top:19px;z-index:1;
+ width:44px;height:44px;border:1px solid #c6c4ad;
+ border-radius:50%;background:rgba(255,253,246,.96);color:#7c5c2b;
+ font-size:25px;line-height:1;box-shadow:0 3px 10px #182d2830
+}
+.favorite-toggle[aria-pressed="true"]{background:#fbefd5;color:#845c18}
+.favorite-toggle:focus-visible{outline:3px solid #286445;outline-offset:3px}
