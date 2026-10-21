@@ -1,7 +1,7 @@
 /** Narración nativa controlada: iniciar, pausar, reanudar y detener.
  * La generación evita que onend de una voz antigua silencie la nueva página.
  */
-export function createNarrator(synth,makeUtterance,onChange=()=>{}){
+export function createNarrator(synth,makeUtterance,onChange=()=>{},onComplete=()=>{}){
  let utterance=null,paused=false,generation=0;
  const notify=()=>onChange({playing:Boolean(utterance),paused});
  const stop=()=>{
@@ -9,14 +9,19 @@ export function createNarrator(synth,makeUtterance,onChange=()=>{}){
    try{synth?.cancel?.()}catch{}
    utterance=null;paused=false;notify();
  };
- const speak=(text,language='es-ES')=>{
+ const speak=(text,language='es-ES',rate=1)=>{
    if(!synth||typeof makeUtterance!=='function'||typeof text!=='string'||!text.trim())return false;
    stop();
    const myGeneration=++generation;
    const next=makeUtterance(text);
    next.lang=language;
-   next.rate=0.95;
-   next.onend=next.onerror=()=>{
+   next.rate=Math.max(0.7,Math.min(1.3,Number.isFinite(rate)?rate:1));
+   next.onend=()=>{
+     if(generation!==myGeneration)return;
+     utterance=null;paused=false;notify();
+     onComplete();
+   };
+   next.onerror=()=>{
      if(generation!==myGeneration)return;
      utterance=null;paused=false;notify();
    };
