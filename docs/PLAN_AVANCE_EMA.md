@@ -104,3 +104,28 @@ Registrar aquí cada avance relevante, el commit, las pruebas efectuadas y lo pe
 - **Pruebas y build de `41246c3`**: ambos workflows de EMA aprobados, [Verificación web](https://github.com/martin30eler-sketch/EMA/actions/runs/39675417838) y [Verificar EMA web](https://github.com/martin30eler-sketch/EMA/actions/runs/39675418133). El commit posterior de tests debe confirmarse de nuevo.
 - **Despliegue de narración del bloque anterior**: Cloudflare Pages confirmó `success` para el commit de historial `e8b1a0e`, con los tests TTS anteriores incluidos.
 - La fase 4 sigue pendiente de aceptación manual en móviles/tabletas, giro de página y narración con voces reales; no se declara cerrada por tests unitarios solamente.
+
+## Bloque funcional W2/W3 — Lectura móvil, voz, capítulos, favoritos y accesibilidad · 21/10/2026
+
+**Desarrollo directo en `EMA/main`** (sitio público únicamente; no se tocó `ADMINN-EMA` ni `EMA_app`). Se completaron funciones relacionadas del plan de lectura, sin sustituir el producto por plantillas.
+
+### Implementado
+- **Paso táctil** (`src/swipe.js`, `src/main.js`, `src/styles.css`): `7e78b49`, `27fb4b6`, `29bd514`. Deslizar horizontalmente en ilustraciones pasa página, sin convertir scroll vertical, arrastre en captions o interacción con controles en cambios accidentales. `94832cc` añade pruebas de dirección, umbral, duración y áreas excluidas.
+- **TTS completo con opciones** (`src/narration.js`, `src/main.js`): `69b4702`, `2fd4a12`, `beae183`, `0fd56cd`. Velocidad lenta/normal/rápida, pausa/reanudación, avance narrado **opcional y desactivado por defecto**, menú de opciones compacto en móvil. `99d7cd0` corrige los eventos `onend/onerror` duplicados para no saltar páginas; tests `5f7c8e8`, `b4998e7`.
+- **Capítulos** (`src/chapters.js`, `src/main.js`): `5ea554a`, `8c01df5`, `b85ec5a`, `6549ebb`. Índice de capítulos v2 desde el menú de lectura, con saltos a la primera página sin mezclar capítulos con varias páginas ni alterar el contrato público v1.
+- **Favoritos y continuar leyendo** (`src/favorites.js`, `src/main.js`): `4b919af`, `b4cb324`, `1617870`, `fb7c941`. Favoritos almacenados exclusivamente en el navegador, filtro de favoritos y acceso indicando última página guardada. Los botones de favoritos son elementos independientes de las tarjetas para no anidar controles.
+- **Recuperación de carga pública**: `c506684` agrega actualización manual del catálogo y reintento tras errores de red sin reemplazar un libro que se abrió mientras había una solicitud pendiente. `b80bc6e`, `8694369` ofrecen marcador accesible para imagen ausente y botón de reintento en las escenas, con portada no interactiva dentro de la tarjeta.
+- **Ajustes de lectura accesibles**: `838c0f8`, `2aa7a4e`, `265e1ba`, `394595d`: letra ampliada y alto contraste opcionales, persistencia local de preferencias de voz y lectura; soportan el texto desplazable. `ae7c047`, `40dd3bf`, `266bc98` evitan que un navegador que bloquea localStorage deje la biblioteca inutilizable; casos de regresión añadidos.
+
+### Verificado
+- Ambos workflows GitHub Actions (pruebas y `npm run build`) finalizaron correctamente para **`266bc989`**:
+  - [Verificación web EMA](https://github.com/martin30eler-sketch/EMA/actions/runs/39678523510)
+  - [Verificar EMA web](https://github.com/martin30eler-sketch/EMA/actions/runs/39678523526)
+- Check **Cloudflare Pages: success** para el mismo commit `266bc989`, con despliegue de Pages `62a28e3f-2aa9-42aa-a647-a121e53cd7f0`. Compilación y despliegue confirmados por GitHub/Cloudflare, **no sustituyen pruebas táctiles en teléfono**.
+- Los tests añadidos cubren gestos, capítulos con varias páginas, favoritos/progreso, preferencia de alto contraste, fallos de almacenamiento, síntesis de voz y eventos de fin tardíos o duplicados.
+
+### Pendiente para cierre de W2/W3 y siguiente
+- **Prueba manual real** en Chrome Android, pantalla pequeña/landscape y escritorio: swipes con caption en scroll, velocidad/avance TTS, legibilidad de largo texto, imagen ausente y opciones de alto contraste.
+- Verificar con navegador y lector de pantalla el foco, las transiciones visuales y giro exclusivo de hoja derecha. No marcar fase cerrada por CI solamente.
+- **W4 Integración editorial:** completar en sesión autorizada el ciclo de publicar libro piloto, comprobar GitHub→Cloudflare→EMA, respaldar ZIP, retirar y republicar, sin tocar los libros actuales sin autorización.
+- Android sigue bloqueado hasta el cierre probado de ambas webs.
