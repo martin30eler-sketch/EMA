@@ -5,12 +5,15 @@ import {swipePageAction,isReaderSwipeTarget} from './swipe.js';
 import './styles.css';
 
 const app = document.getElementById('app');
-const state = { books: [], selected: null, page: 1, current: null, speech: false, speechPaused: false, moving: false, view: 'auto', requestId: 0 };
+const state = { books: [], selected: null, page: 1, current: null, speech: false, speechPaused: false, voiceRate: 1, autoNarrate: false, moving: false, view: 'auto', requestId: 0 };
 const reducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)');
 const desktopSpread = window.matchMedia('(min-width: 681px)');
 const narrator = ('speechSynthesis' in window && typeof SpeechSynthesisUtterance!=='undefined')
   ? createNarrator(window.speechSynthesis,text=>new SpeechSynthesisUtterance(text),status=>{
       state.speech=status.playing;state.speechPaused=status.paused;updateVoiceButton();
+    },()=>{
+      if(state.autoNarrate&&state.selected&&!state.moving&&state.page<state.selected.pages.length)
+        turnTo(state.page+1,true);
     }):null;
 const el = (tag, className, text) => {
   const node = document.createElement(tag);
@@ -127,7 +130,7 @@ function utterPage() {
   if (state.speech) { stopVoice(); updateVoiceButton(); return; }
   const page = state.selected?.pages[state.page - 1];
   if (!page) return;
-  if (!narrator.speak(bookPageText(page))) {
+  if (!narrator.speak(bookPageText(page),'es-ES',state.voiceRate)) {
     const note=document.getElementById('voice-notice');
     if(note)note.textContent='El dispositivo no pudo iniciar la narración.';
   }
@@ -203,7 +206,7 @@ function renderSceneClassic(page) {
   page.scenes.forEach((scene,i)=>{const section=el('section','classic-scene');section.append(createImg(scene.image,'Escena '+(i+1),'page-image'),el('p','page-text',scene.text));content.append(section);});
   return content;
 }
-function turnTo(next) {
+function turnTo(next,continueNarration=false) {
   const book = state.selected;
   if (state.moving || !book || next < 1 || next > book.pages.length || next === state.page) return;
   const old = state.page;
@@ -215,6 +218,7 @@ function turnTo(next) {
     writeProgress(book.id, next);
     state.moving = false;
     renderReader();
+    if(continueNarration)utterPage();
   };
   if (reducedMotion.matches) return finish();
   const sheet = document.querySelector('.flip-sheet');
@@ -323,8 +327,26 @@ function renderReader() {
     pause.disabled=!state.speech;
     pause.setAttribute('aria-pressed',String(state.speechPaused));
     voiceControls.append(speak,pause);
+    const rateLabel=el('label','reader-voice-rate','Velocidad ');
+    const rateControl=el('select','reader-rate-select');
+    rateControl.setAttribute('aria-label','Velocidad de narración');
+    [[0.8,'Lenta · 0,8×'],[1,'Normal · 1×'],[1.2,'Rápida · 1,2×']].forEach(([rate,label])=>{
+      const option=el('option','',label);option.value=String(rate);
+      option.selected=state.voiceRate===rate;rateControl.append(option);
+    });
+    rateControl.addEventListener('change',()=>{
+      state.voiceRate=Number(rateControl.value);
+      if(state.speech){stopVoice();utterPage();}
+    });
+    rateLabel.append(rateControl);
+    voiceControls.append(rateLabel);
+    const autoLabel=el('label','reader-autonarrate');
+    const autoInput=el('input');autoInput.type='checkbox';autoInput.checked=state.autoNarrate;
+    autoInput.addEventListener('change',()=>{state.autoNarrate=autoInput.checked;});
+    autoLabel.append(autoInput,el('span','','Seguir leyendo al terminar'));
+    voiceControls.append(autoLabel);
     main.append(voiceControls);
-    const note=el('p','reader-hint','Narración del dispositivo · Puedes pausar, reanudar y detener la lectura.');
+    const note=el('p','reader-hint','Narración del dispositivo · Pausa, velocidad y avance automático opcional.');
     note.id='voice-notice';main.append(note);
   }
   const following = book.pages[state.page]?.image || book.pages[state.page]?.scenes?.[0]?.image;
