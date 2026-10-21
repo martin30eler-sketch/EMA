@@ -4,12 +4,15 @@ import {navigationAction} from './keyboard.js';
 import {swipePageAction,isReaderSwipeTarget} from './swipe.js';
 import {chapterStarts,currentChapter} from './chapters.js';
 import {isFavorite,toggleFavorite,hasReadingProgress} from './favorites.js';
+import {readReaderPreferences,saveReaderPreferences} from './reader-preferences.js';
 import './styles.css';
 
 const app = document.getElementById('app');
-const state = { books: [], selected: null, page: 1, current: null, speech: false, speechPaused: false, voiceRate: 1, autoNarrate: false, favoritesOnly: false, moving: false, view: 'auto', requestId: 0, catalogRequestId: 0 };
+const savedPreferences=readReaderPreferences();
+const state = { books: [], selected: null, page: 1, current: null, speech: false, speechPaused: false, voiceRate: savedPreferences.voiceRate, autoNarrate: savedPreferences.autoNarrate, largeText: savedPreferences.largeText, highContrast: savedPreferences.highContrast, favoritesOnly: false, moving: false, view: 'auto', requestId: 0, catalogRequestId: 0 };
 const reducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)');
 const desktopSpread = window.matchMedia('(min-width: 681px)');
+function persistReaderSettings(){saveReaderPreferences(state)}
 const narrator = ('speechSynthesis' in window && typeof SpeechSynthesisUtterance!=='undefined')
   ? createNarrator(window.speechSynthesis,text=>new SpeechSynthesisUtterance(text),status=>{
       state.speech=status.playing;state.speechPaused=status.paused;updateVoiceButton();
@@ -304,6 +307,8 @@ function renderReader() {
   const page = book.pages[state.page - 1];
   const main = shell();
   main.classList.add('reader-main');
+  if(state.largeText)main.classList.add('reader-text-large');
+  if(state.highContrast)main.classList.add('reader-high-contrast');
   const top = el('div', 'reader-top');
   const back = button('←', 'back-btn', showLibrary);
   back.setAttribute('aria-label', 'Volver a la biblioteca');
@@ -325,6 +330,18 @@ function renderReader() {
     });
     option.setAttribute('aria-pressed',String(state.view===value));
     menu.append(option);
+  });
+  menu.append(el('p','reader-modes-label','Accesibilidad'));
+  [['largeText','Aumentar letra'],['highContrast','Alto contraste']].forEach(([key,label])=>{
+    const choice=button((state[key]?'✓  ':'')+label,
+      'reader-mode-option'+(state[key]?' selected':''),()=>{
+        state[key]=!state[key];
+        persistReaderSettings();
+        renderReader();
+        document.querySelector('.reader-modes-trigger')?.focus();
+      });
+    choice.setAttribute('aria-pressed',String(state[key]));
+    menu.append(choice);
   });
   const chapters=chapterStarts(book.pages);
   if(chapters.length>1){
@@ -401,6 +418,7 @@ function renderReader() {
     });
     rateControl.addEventListener('change',()=>{
       state.voiceRate=Number(rateControl.value);
+      persistReaderSettings();
       if(state.speech){stopVoice();utterPage();}
     });
     rateLabel.append(rateControl);
@@ -409,7 +427,7 @@ function renderReader() {
     const settingsPanel=el('div','reader-voice-options-panel');
     const autoLabel=el('label','reader-autonarrate');
     const autoInput=el('input');autoInput.type='checkbox';autoInput.checked=state.autoNarrate;
-    autoInput.addEventListener('change',()=>{state.autoNarrate=autoInput.checked;});
+    autoInput.addEventListener('change',()=>{state.autoNarrate=autoInput.checked;persistReaderSettings();});
     autoLabel.append(autoInput,el('span','','Seguir leyendo al terminar'));
     settingsPanel.append(rateLabel,autoLabel);
     settings.append(settingsTrigger,settingsPanel);
