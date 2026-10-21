@@ -1,10 +1,15 @@
 import { validateCatalog, validateBook, readProgress, writeProgress } from './libros.js';
+import {createNarrator} from './narration.js';
 import './styles.css';
 
 const app = document.getElementById('app');
-const state = { books: [], selected: null, page: 1, current: null, speech: false, moving: false, view: 'auto', requestId: 0 };
+const state = { books: [], selected: null, page: 1, current: null, speech: false, speechPaused: false, moving: false, view: 'auto', requestId: 0 };
 const reducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)');
 const desktopSpread = window.matchMedia('(min-width: 681px)');
+const narrator = ('speechSynthesis' in window && typeof SpeechSynthesisUtterance!=='undefined')
+  ? createNarrator(window.speechSynthesis,text=>new SpeechSynthesisUtterance(text),status=>{
+      state.speech=status.playing;state.speechPaused=status.paused;updateVoiceButton();
+    }):null;
 const el = (tag, className, text) => {
   const node = document.createElement(tag);
   if (className) node.className = className;
@@ -42,8 +47,9 @@ function shell() {
   return main;
 }
 function stopVoice() {
-  if ('speechSynthesis' in window) window.speechSynthesis.cancel();
+  narrator?.stop();
   state.speech = false;
+  state.speechPaused = false;
 }
 function showLibrary(message) {
   state.requestId += 1;
@@ -115,23 +121,25 @@ async function openBook(entry) {
   }
 }
 function utterPage() {
-  if (!('speechSynthesis' in window)) return;
-  if (state.speech) { stopVoice(); renderReader(); return; }
+  if (!narrator) return;
+  if (state.speech) { stopVoice(); updateVoiceButton(); return; }
   const page = state.selected?.pages[state.page - 1];
   if (!page) return;
-  stopVoice();
-  const speech = new SpeechSynthesisUtterance(bookPageText(page));
-  speech.lang = 'es-ES';
-  speech.rate = 0.95;
-  speech.onend = () => { state.speech = false; updateVoiceButton(); };
-  speech.onerror = () => { state.speech = false; updateVoiceButton(); };
-  state.speech = true;
-  window.speechSynthesis.speak(speech);
-  updateVoiceButton();
+  if (!narrator.speak(bookPageText(page))) {
+    const note=document.getElementById('voice-notice');
+    if(note)note.textContent='El dispositivo no pudo iniciar la narración.';
+  }
 }
+function pauseVoice() { narrator?.togglePause(); }
 function updateVoiceButton() {
-  const b = document.getElementById('speak-btn');
-  if (b) b.textContent = state.speech ? '■ Detener narración' : '♫ Escuchar página';
+  const speak=document.getElementById('speak-btn');
+  const pause=document.getElementById('pause-btn');
+  if(speak)speak.textContent=state.speech?'■ Detener narración':'♫ Escuchar página';
+  if(pause){
+    pause.disabled=!state.speech;
+    pause.textContent=state.speechPaused?'▶ Reanudar':'Ⅱ Pausar';
+    pause.setAttribute('aria-pressed',String(state.speechPaused));
+  }
 }
 function bookPageText(page) { return Array.isArray(page.scenes) ? page.scenes.map(scene => scene.text).join(' ') : page.text; }
 function renderContent(page) {
@@ -289,10 +297,18 @@ function renderReader() {
   next.disabled = state.page === book.pages.length;
   controls.append(prev, counter, next);
   main.append(controls);
-  if ('speechSynthesis' in window) {
-    const speak = button('♫ Escuchar página', 'listen-btn', utterPage);
-    speak.id = 'speak-btn';
-    main.append(speak, el('p', 'reader-hint', 'Narración automática del dispositivo · No se ha publicado un audio original para esta historia.'));
+  if (narrator) {
+    const voiceControls=el('div','reader-voice-controls');
+    const speak=button(state.speech?'■ Detener narración':'♫ Escuchar página','listen-btn',utterPage);
+    speak.id='speak-btn';
+    const pause=button(state.speechPaused?'▶ Reanudar':'Ⅱ Pausar','listen-btn pause-btn',pauseVoice);
+    pause.id='pause-btn';
+    pause.disabled=!state.speech;
+    pause.setAttribute('aria-pressed',String(state.speechPaused));
+    voiceControls.append(speak,pause);
+    main.append(voiceControls);
+    const note=el('p','reader-hint','Narración del dispositivo · Puedes pausar, reanudar y detener la lectura.');
+    note.id='voice-notice';main.append(note);
   }
   const following = book.pages[state.page]?.image || book.pages[state.page]?.scenes?.[0]?.image;
   if (following) { const preload = new Image(); preload.src = following; }
