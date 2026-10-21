@@ -501,3 +501,20 @@
 }
 .favorite-toggle[aria-pressed="true"]{background:#fbefd5;color:#845c18}
 .favorite-toggle:focus-visible{outline:3px solid #286445;outline-offset:3px}
+
+/* Recuperación de recursos públicos sin ocultar narraciones si una imagen falla. */
+.catalog-refresh{border:1px solid #c2ccbe;border-radius:999px;background:transparent;
+ color:#28533c;min-height:40px;padding:8px 15px;font:600 13px system-ui,sans-serif}
+.catalog-refresh:hover,.catalog-refresh:focus-visible{background:#ecf4ed}
+.illustration-fallback{
+ display:flex!important;flex-direction:column;align-items:center;justify-content:center;
+ gap:13px;min-width:0;padding:clamp(12px,3vw,24px);text-align:center;
+ background:linear-gradient(145deg,#e9e6d9,#dce4db);color:#365943;
+ font:600 clamp(12px,2vw,15px)/1.5 system-ui,sans-serif
+}
+.illustration-fallback.cover{aspect-ratio:3/4}
+.illustration-fallback.scene-image,.illustration-fallback.spread-image{height:100%;min-height:0}
+.image-retry{min-height:40px;padding:7px 12px;border:1px solid #93aa99;
+ border-radius:7px;background:#fffdf8;color:#28533c;font:600 12px system-ui,sans-serif}
+.image-retry:focus-visible{outline:3px solid #ae8450;outline-offset:2px}
+@media(max-width:680px){.catalog-refresh{font-size:12px;padding:8px 11px}}
