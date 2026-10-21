@@ -3,10 +3,11 @@ import {createNarrator} from './narration.js';
 import {navigationAction} from './keyboard.js';
 import {swipePageAction,isReaderSwipeTarget} from './swipe.js';
 import {chapterStarts,currentChapter} from './chapters.js';
+import {isFavorite,toggleFavorite,hasReadingProgress} from './favorites.js';
 import './styles.css';
 
 const app = document.getElementById('app');
-const state = { books: [], selected: null, page: 1, current: null, speech: false, speechPaused: false, voiceRate: 1, autoNarrate: false, moving: false, view: 'auto', requestId: 0 };
+const state = { books: [], selected: null, page: 1, current: null, speech: false, speechPaused: false, voiceRate: 1, autoNarrate: false, favoritesOnly: false, moving: false, view: 'auto', requestId: 0 };
 const reducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)');
 const desktopSpread = window.matchMedia('(min-width: 681px)');
 const narrator = ('speechSynthesis' in window && typeof SpeechSynthesisUtterance!=='undefined')
@@ -75,18 +76,33 @@ function showLibrary(message) {
   search.placeholder = 'Buscar por título o autor…';
   search.setAttribute('aria-label', 'Buscar libros');
   main.append(search);
+  const filters=el('div','library-filters');
+  const favoritesFilter=button('☆ Solo favoritos','favorites-filter',()=>{
+    state.favoritesOnly=!state.favoritesOnly;
+    draw();
+  });
+  favoritesFilter.setAttribute('aria-pressed',String(state.favoritesOnly));
+  filters.append(favoritesFilter);
+  const libraryFeedback=el('p','library-feedback');
+  libraryFeedback.setAttribute('role','status');
+  filters.append(libraryFeedback);
+  main.append(filters);
   const grid = el('div', 'book-grid');
   main.append(grid);
   if (message) { const note = el('div', 'notice', message); note.setAttribute('role', 'status'); main.insertBefore(note, heading); }
   const draw = () => {
     const query = search.value.trim().toLocaleLowerCase('es');
-    const matches = state.books.filter(book => (book.title + ' ' + book.author).toLocaleLowerCase('es').includes(query));
+    favoritesFilter.textContent=state.favoritesOnly?'★ Todos los libros':'☆ Solo favoritos';
+    favoritesFilter.setAttribute('aria-pressed',String(state.favoritesOnly));
+    const matches = state.books.filter(book => (book.title + ' ' + book.author).toLocaleLowerCase('es').includes(query) &&
+      (!state.favoritesOnly||isFavorite(book.id)));
     heading.lastElementChild.textContent = matches.length + ' libros';
     grid.replaceChildren();
     if (!matches.length) {
       const empty = el('div', 'empty-state');
       empty.append(el('div', 'empty-symbol', '✧'), el('h3', '', state.books.length ? 'Sin resultados' : 'Nuestra biblioteca abrirá pronto'),
-        el('p', '', state.books.length ? 'Prueba con otro título o autor.' : 'Estamos preparando las primeras historias ilustradas. Vuelve a visitarnos.'));
+        el('p', '', state.favoritesOnly?'Marca ☆ en las portadas para crear tu colección local.':
+          state.books.length ? 'Prueba con otro título o autor.' : 'Estamos preparando las primeras historias ilustradas. Vuelve a visitarnos.'));
       grid.append(empty);
       return;
     }
@@ -96,8 +112,24 @@ function showLibrary(message) {
       card.append(createImg(book.cover, 'Portada de ' + book.title, 'cover'),
         el('span', 'book-overline', book.pageCount + ' páginas'),
         el('strong', 'book-title', book.title), el('span', 'book-author', book.author),
-        el('span', 'book-cta', 'Abrir historia →'));
-      grid.append(card);
+        el('span', 'book-cta', hasReadingProgress(book.id,book.pageCount)
+          ?'Continuar en página '+readProgress(book.id,book.pageCount)+' →':'Abrir historia →'));
+      const favorite=isFavorite(book.id);
+      const favoriteButton=button(favorite?'★':'☆','favorite-toggle',()=>{
+        const result=toggleFavorite(book.id);
+        if(result===null){
+          libraryFeedback.textContent='Este navegador no permite guardar favoritos.';
+          return;
+        }
+        libraryFeedback.textContent='';
+        draw();
+      });
+      favoriteButton.setAttribute('aria-pressed',String(favorite));
+      favoriteButton.setAttribute('aria-label',(favorite?'Quitar de favoritos: ':'Añadir a favoritos: ')+book.title);
+      favoriteButton.title=favorite?'Quitar de favoritos':'Guardar como favorito local';
+      const item=el('div','book-item');
+      item.append(card,favoriteButton);
+      grid.append(item);
     }
   };
   search.addEventListener('input', draw);
