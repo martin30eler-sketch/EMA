@@ -29,12 +29,24 @@ const button = (label, cls, fn) => {
   node.addEventListener('click', fn);
   return node;
 };
-function createImg(src, alt, className) {
+function createImg(src, alt, className, retry=false) {
   const img = el('img', className);
-  img.src = src;
+  img.src = retry ? src+(src.includes('?')?'&':'?')+'ema_retry='+Date.now() : src;
   img.alt = alt;
   img.loading = 'lazy';
   img.decoding = 'async';
+  img.addEventListener('error',()=>{
+    const missing=el('div',className+' illustration-fallback');
+    missing.setAttribute('role','img');
+    missing.setAttribute('aria-label',alt+'. Ilustración no disponible.');
+    missing.append(el('span','','Ilustración temporalmente no disponible'));
+    if(className!=='cover'){
+      missing.append(button('Reintentar imagen','image-retry',()=>{
+        missing.replaceWith(createImg(src,alt,className,true));
+      }));
+    }
+    img.replaceWith(missing);
+  },{once:true});
   return img;
 }
 function shell() {
