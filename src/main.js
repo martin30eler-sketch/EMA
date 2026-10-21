@@ -2,6 +2,7 @@ import { validateCatalog, validateBook, readProgress, writeProgress } from './li
 import {createNarrator} from './narration.js';
 import {navigationAction} from './keyboard.js';
 import {swipePageAction,isReaderSwipeTarget} from './swipe.js';
+import {chapterStarts,currentChapter} from './chapters.js';
 import './styles.css';
 
 const app = document.getElementById('app');
@@ -276,6 +277,21 @@ function renderReader() {
     option.setAttribute('aria-pressed',String(state.view===value));
     menu.append(option);
   });
+  const chapters=chapterStarts(book.pages);
+  if(chapters.length>1){
+    const sectionLabel=el('p','reader-modes-label','Ir al capítulo');
+    menu.append(sectionLabel);
+    const activeChapter=currentChapter(chapters,state.page);
+    chapters.forEach((chapter,index)=>{
+      const section=button(chapter.title,'reader-chapter-option'+(activeChapter===index?' selected':''),()=>{
+        modes.open=false;
+        turnTo(chapter.page);
+      });
+      section.setAttribute('aria-current',String(activeChapter===index?'page':'false'));
+      section.title='Ir a la página '+chapter.page;
+      menu.append(section);
+    });
+  }
   modes.append(menu);
   top.append(modes);
   main.append(top);
