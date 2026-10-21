@@ -419,3 +419,13 @@
 @media (prefers-reduced-motion:reduce){
   .spread-turning-leaf{animation:none!important}
 }
+
+/* Narración accesible: controles independientes de pausa y parada, táctiles. */
+.reader-voice-controls{display:flex;justify-content:center;align-items:center;gap:12px;
+  flex-wrap:wrap;margin:23px auto 9px}
+.reader-voice-controls .listen-btn{display:inline-flex;margin:0;min-height:44px;
+  align-items:center;justify-content:center;gap:6px}
+.reader-voice-controls .listen-btn:disabled{opacity:.45;cursor:not-allowed}
+.reader-voice-controls .pause-btn[aria-pressed="true"]{background:#e4eadd;color:#214e37}
+@media(max-width:420px){.reader-voice-controls{gap:8px}
+  .reader-voice-controls .listen-btn{font-size:12px;padding:10px 13px}}
