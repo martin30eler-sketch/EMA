@@ -1,13 +1,14 @@
 /** Favoritos locales de lectura, sin cuentas ni datos enviados al servidor. */
 const prefix='ema:favorito:';
+const browserStorage=()=>{try{return globalThis.localStorage}catch{return null}};
 const validId=id=>typeof id==='string'&&/^[a-z0-9]+(?:-[a-z0-9]+)*$/.test(id)&&id.length<=80;
 export const favoriteKey=id=>validId(id)?prefix+id:null;
-export function isFavorite(id,storage=globalThis.localStorage){
+export function isFavorite(id,storage=browserStorage()){
  const key=favoriteKey(id);
  if(!key||!storage)return false;
  try{return storage.getItem(key)==='1'}catch{return false}
 }
-export function toggleFavorite(id,storage=globalThis.localStorage){
+export function toggleFavorite(id,storage=browserStorage()){
  const key=favoriteKey(id);
  if(!key||!storage)return null;
  try{
@@ -17,7 +18,7 @@ export function toggleFavorite(id,storage=globalThis.localStorage){
    return next;
  }catch{return null}
 }
-export function hasReadingProgress(id,count,storage=globalThis.localStorage){
+export function hasReadingProgress(id,count,storage=browserStorage()){
  if(!validId(id)||!Number.isInteger(count)||count<1||!storage)return false;
  try{
    const raw=storage.getItem('ema:pagina:'+id);
