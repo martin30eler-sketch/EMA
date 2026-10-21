@@ -44,3 +44,8 @@ Registrar aquí cada avance relevante, el commit, las pruebas efectuadas y lo pe
 - Incorporado workflow `.github/workflows/verificar-web.yml` en `main`, commit `36e0919`, con `npm ci`, `npm test` y `npm run build`.
 - Confirmada la presencia del archivo en GitHub. No se ha comprobado aún un resultado exitoso de ejecución ni el despliegue Cloudflare; fase W0 continúa abierta.
 - Próximo paso: verificar resultado de Actions, resolver errores y comprobar la versión de producción antes de cerrar W0.
+
+## Corrección de CI · 21/10/2026
+- Se comprobó que el repositorio no contiene `package-lock.json`. El workflow anterior usaba `npm ci`, incompatible con esa situación.
+- Se corrigió el workflow para instalar dependencias con `npm install --no-audit --no-fund` en `main` (`2a291ad`).
+- **Sin verificar:** resultado de GitHub Actions, compilación y despliegue Cloudflare. Como mejora futura, versionar un lockfile y volver a `npm ci` para instalaciones reproducibles.
