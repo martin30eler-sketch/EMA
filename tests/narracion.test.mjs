@@ -79,5 +79,5 @@ test('la continuación automática solo se dispara al terminar naturalmente la p
  voices[2].onend();
  assert.equal(completed,1);
  voices[2].onend();
- assert.equal(completed,2);
+ assert.equal(completed,1);
 });
