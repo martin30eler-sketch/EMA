@@ -49,3 +49,8 @@ Registrar aquí cada avance relevante, el commit, las pruebas efectuadas y lo pe
 - Se comprobó que el repositorio no contiene `package-lock.json`. El workflow anterior usaba `npm ci`, incompatible con esa situación.
 - Se corrigió el workflow para instalar dependencias con `npm install --no-audit --no-fund` en `main` (`2a291ad`).
 - **Sin verificar:** resultado de GitHub Actions, compilación y despliegue Cloudflare. Como mejora futura, versionar un lockfile y volver a `npm ci` para instalaciones reproducibles.
+
+## Cobertura de contrato editorial v2 · 21/10/2026
+- Nuevas pruebas en `tests/libros.test.mjs`, commits `52120bd`, `daf32a7` y `2d3fb8b` en `main`.
+- Casos añadidos: rechazo de tres escenas en una página, rechazo de texto de escena vacío, rechazo de geometría flotante fuera de límites y aceptación de dos escenas válidas.
+- Estado: implementado, pendiente de confirmar ejecución satisfactoria de GitHub Actions y despliegue Cloudflare.
