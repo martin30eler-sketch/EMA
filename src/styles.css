@@ -518,3 +518,27 @@
  border-radius:7px;background:#fffdf8;color:#28533c;font:600 12px system-ui,sans-serif}
 .image-retry:focus-visible{outline:3px solid #ae8450;outline-offset:2px}
 @media(max-width:680px){.catalog-refresh{font-size:12px;padding:8px 11px}}
+
+/* Preferencias del lector activadas exclusivamente por el usuario. */
+.reader-text-large .spread-text,.reader-text-large .page-text{
+ font-size:clamp(18px,2.2vw,23px);line-height:1.7
+}
+.reader-text-large .scene-caption,
+.reader-text-large .illustrated-scene .scene-caption.caption-integrated{
+ font-size:clamp(16px,2.5vw,21px)!important;line-height:1.5
+}
+.reader-high-contrast .scene-caption{
+ background:rgba(255,255,255,.99)!important;color:#102419!important;
+ box-shadow:0 0 0 2px #34533d,0 3px 14px #0004
+}
+.reader-high-contrast .spread-stories,.reader-high-contrast .page-content{
+ background:#fffefa
+}
+.reader-high-contrast .spread-text,.reader-high-contrast .page-text{color:#102419}
+@media(max-width:680px){
+ .reader-text-large .scene-caption,
+ .reader-text-large .illustrated-scene .scene-caption.caption-integrated{
+  font-size:clamp(15px,3.7vw,19px)!important;line-height:1.4
+ }
+ .reader-text-large .page-text{font-size:19px}
+}
