@@ -18,11 +18,13 @@ export function createNarrator(synth,makeUtterance,onChange=()=>{},onComplete=()
    next.rate=Math.max(0.7,Math.min(1.3,Number.isFinite(rate)?rate:1));
    next.onend=()=>{
      if(generation!==myGeneration)return;
+     generation++;
      utterance=null;paused=false;notify();
      onComplete();
    };
    next.onerror=()=>{
      if(generation!==myGeneration)return;
+     generation++;
      utterance=null;paused=false;notify();
    };
    utterance=next;
