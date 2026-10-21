@@ -11,3 +11,5 @@ test('rechaza una tercera escena por página',()=>{const b=makeBook();b.schemaVe
 
 test('rechaza texto vacío en escenas v2',()=>{const b=makeBook();b.schemaVersion=2;b.pages=b.pages.map((p,i)=>({number:i+1,scenes:[{text:p.text,image:p.image}]}));b.pages[1].scenes[0].text=' ';assert.throws(()=>validateBook(b,entry));});
 test('rechaza geometría inválida en textos flotantes',()=>{const b=makeBook();b.schemaVersion=2;b.pages=b.pages.map((p,i)=>({number:i+1,scenes:[{text:p.text,image:p.image,layout:{x:80,y:5,width:50,fontSize:16}}]}));assert.throws(()=>validateBook(b,entry));});
+
+test('acepta una página v2 con dos escenas y posiciones válidas',()=>{const b=makeBook();b.schemaVersion=2;b.pages=[{number:1,scenes:[{text:'Primera escena',image:'/libros/un-libro/escena-001.jpg',captionMode:'floating',layout:{x:5,y:10,width:45,fontSize:16}},{text:'Segunda escena',image:'/libros/un-libro/escena-002.jpg',captionMode:'integrated'}]},{number:2,scenes:[{text:'Final',image:'/libros/un-libro/escena-003.jpg'}]}];assert.equal(validateBook(b,entry),b);});
