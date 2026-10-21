@@ -16,7 +16,7 @@ jobs:
           node-version: '22'
           cache: npm
       - name: Instalar dependencias reproducibles
-        run: npm ci
+        run: npm install --no-audit --no-fund
       - name: Ejecutar pruebas
         run: npm test
       - name: Compilar produccion
