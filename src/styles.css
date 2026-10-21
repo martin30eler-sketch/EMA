@@ -439,3 +439,35 @@
     touch-action:pan-y;overscroll-behavior-y:contain
   }
 }
+
+/* Las opciones de voz permanecen plegadas: no reducen la hoja móvil. */
+.reader-voice-controls{position:relative}
+.reader-voice-options{position:relative}
+.reader-voice-options-trigger{
+  list-style:none;cursor:pointer;display:flex;align-items:center;justify-content:center;
+  min-height:44px;padding:10px 13px;border:1px solid #a3b3a3;
+  border-radius:999px;background:#fffdf8;color:#275841;font:600 12px/1.2 system-ui,sans-serif
+}
+.reader-voice-options-trigger::-webkit-details-marker{display:none}
+.reader-voice-options-trigger::marker{content:''}
+.reader-voice-options-trigger:focus-visible,.reader-rate-select:focus-visible,
+.reader-autonarrate input:focus-visible{outline:3px solid #ae8450;outline-offset:3px}
+.reader-voice-options[open] .reader-voice-options-trigger{background:#e4eee5}
+.reader-voice-options-panel{
+  position:absolute;z-index:20;bottom:calc(100% + 9px);right:0;
+  display:flex;flex-direction:column;gap:13px;width:min(290px,90vw);
+  padding:17px;border:1px solid #c6d2c5;border-radius:12px;
+  background:#fffdf9;box-shadow:0 12px 35px #1c322b33;
+  color:#284635;font:13px/1.4 system-ui,sans-serif
+}
+.reader-voice-rate{display:flex;align-items:center;justify-content:space-between;gap:10px}
+.reader-rate-select{font:inherit;max-width:175px;min-height:40px;padding:6px 8px;
+  border:1px solid #9bb3a0;border-radius:8px;color:#284635;background:white}
+.reader-autonarrate{display:flex;align-items:center;gap:9px}
+.reader-autonarrate input{width:18px;height:18px;accent-color:#275841}
+@media(max-width:680px){
+  .reader-voice-controls{gap:5px;margin:3px auto 3px}
+  .reader-voice-options-trigger{min-height:36px;padding:5px 9px;font-size:11px}
+  .reader-voice-controls .listen-btn{min-height:36px;padding:6px 10px}
+  .reader-voice-options-panel{bottom:calc(100% + 5px);right:0}
+}
