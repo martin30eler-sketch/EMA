@@ -7,7 +7,7 @@ import {isFavorite,toggleFavorite,hasReadingProgress} from './favorites.js';
 import './styles.css';
 
 const app = document.getElementById('app');
-const state = { books: [], selected: null, page: 1, current: null, speech: false, speechPaused: false, voiceRate: 1, autoNarrate: false, favoritesOnly: false, moving: false, view: 'auto', requestId: 0 };
+const state = { books: [], selected: null, page: 1, current: null, speech: false, speechPaused: false, voiceRate: 1, autoNarrate: false, favoritesOnly: false, moving: false, view: 'auto', requestId: 0, catalogRequestId: 0 };
 const reducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)');
 const desktopSpread = window.matchMedia('(min-width: 681px)');
 const narrator = ('speechSynthesis' in window && typeof SpeechSynthesisUtterance!=='undefined')
@@ -83,6 +83,11 @@ function showLibrary(message) {
   });
   favoritesFilter.setAttribute('aria-pressed',String(state.favoritesOnly));
   filters.append(favoritesFilter);
+  const refreshCatalog=button('↻ Actualizar biblioteca','catalog-refresh',()=>{
+    libraryFeedback.textContent='Comprobando las novedades publicadas…';
+    void loadCatalog();
+  });
+  filters.append(refreshCatalog);
   const libraryFeedback=el('p','library-feedback');
   libraryFeedback.setAttribute('role','status');
   filters.append(libraryFeedback);
@@ -426,13 +431,23 @@ document.addEventListener('keydown',event=>{
   else if(action==='last')turnTo(state.selected.pages.length);
 });
 desktopSpread.addEventListener('change',()=>{ if(state.selected&&!state.moving)renderReader(); });
-async function start() {
-  showLibrary();
+async function loadCatalog() {
+  const sequence=++state.catalogRequestId;
+  const readerRequest=state.requestId;
   try {
-    const response = await fetch('/catalogo.json', { cache: 'no-cache' });
-    if (!response.ok) throw Error('No se pudo leer el catálogo.');
-    state.books = validateCatalog(await response.json());
+    const response=await fetch('/catalogo.json', {cache:'no-cache'});
+    if(!response.ok)throw Error('El catálogo respondió '+response.status+'.');
+    const books=validateCatalog(await response.json());
+    if(sequence!==state.catalogRequestId||readerRequest!==state.requestId)return;
+    state.books=books;
     showLibrary();
-  } catch { showLibrary('La biblioteca no está disponible temporalmente. Inténtalo más tarde.'); }
+  } catch(error) {
+    if(sequence!==state.catalogRequestId||readerRequest!==state.requestId)return;
+    showLibrary('La biblioteca no está disponible temporalmente: '+error.message+' Puedes volver a actualizarla.');
+  }
+}
+function start() {
+  showLibrary();
+  void loadCatalog();
 }
 void start();
