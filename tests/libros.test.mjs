@@ -8,3 +8,6 @@ test('bloquea páginas vacías y saltos',()=>{const b=makeBook();b.pages[1].numb
 test('bloquea rutas externas, duplicados y IDs peligrosos',()=>{assert.throws(()=>validateCatalog({schemaVersion:1,books:[entry,{...entry}]}));assert.throws(()=>validateCatalog({schemaVersion:1,books:[{...entry,cover:'https://lh3.googleusercontent.com/x'}]}));assert.throws(()=>validateCatalog({schemaVersion:1,books:[{...entry,id:'../../clave'}]}))});
 
 test('rechaza una tercera escena por página',()=>{const b=makeBook();b.schemaVersion=2;b.pages=b.pages.map((p,i)=>({number:i+1,scenes:[{text:p.text,image:p.image}]}));b.pages[0].scenes.push(...b.pages[0].scenes,...b.pages[0].scenes);assert.throws(()=>validateBook(b,entry));});
+
+test('rechaza texto vacío en escenas v2',()=>{const b=makeBook();b.schemaVersion=2;b.pages=b.pages.map((p,i)=>({number:i+1,scenes:[{text:p.text,image:p.image}]}));b.pages[1].scenes[0].text=' ';assert.throws(()=>validateBook(b,entry));});
+test('rechaza geometría inválida en textos flotantes',()=>{const b=makeBook();b.schemaVersion=2;b.pages=b.pages.map((p,i)=>({number:i+1,scenes:[{text:p.text,image:p.image,layout:{x:80,y:5,width:50,fontSize:16}}]}));assert.throws(()=>validateBook(b,entry));});
