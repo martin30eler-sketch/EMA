@@ -18,8 +18,8 @@ export function validateCatalog(input) {
   const known = new Set();
   return input.books.map(entry => {
     if (!entry || !ID.test(entry.id || '') || known.has(entry.id) ||
-      !titleOK(entry.title) || !titleOK(entry.author) ||
-      !Number.isInteger(entry.pageCount) || entry.pageCount < 1 ||
+      entry.id.length > 80 || !titleOK(entry.title) || !titleOK(entry.author) ||
+      !Number.isInteger(entry.pageCount) || entry.pageCount < 1 || entry.pageCount > 35 ||
       !asset(entry.id, entry.cover) ||
       entry.bookPath !== '/libros/' + entry.id + '/libro.json') {
       throw Error('El catálogo contiene una ficha incorrecta.');
@@ -33,10 +33,10 @@ export function validateBook(book, entry) {
   if (!book || ![1,2].includes(book.schemaVersion) || book.id !== entry.id ||
       book.title !== entry.title || book.author !== entry.author ||
       book.cover !== entry.cover || !Array.isArray(book.pages) ||
-      book.pages.length !== entry.pageCount) throw Error('El libro no coincide con el catálogo.');
+      book.pages.length !== entry.pageCount || book.pages.length > 35) throw Error('El libro no coincide con el catálogo.');
   book.pages.forEach((page, index) => {
     if (book.schemaVersion === 2) {
-      if (!page || page.number !== index + 1 || !Array.isArray(page.scenes) || !page.scenes.length || page.scenes.length > 2 ||
+      if (!page || page.number !== index + 1 || typeof page.chapterTitle !== 'string' || !Array.isArray(page.scenes) || !page.scenes.length || page.scenes.length > 2 ||
           page.scenes.some(scene => !scene || !asset(book.id, scene.image) || typeof scene.text !== 'string' || !scene.text.trim() || !layoutOK(scene.layout) || ![undefined,'integrated','floating'].includes(scene.captionMode))) {
         throw Error('Falta texto editable o ilustración en la página ' + (index + 1) + '.');
       }
