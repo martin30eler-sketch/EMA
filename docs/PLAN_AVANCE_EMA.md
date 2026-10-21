@@ -95,3 +95,12 @@ Registrar aquí cada avance relevante, el commit, las pruebas efectuadas y lo pe
 **Pendiente:** prueba manual de las voces disponibles, pausa/reanudación y controles en Android Chrome y escritorio; lectura íntegra en ambos formatos, contraste y verificación del giro exclusivo de hoja derecha con dispositivo real.
 
 **Siguiente paso del plan:** continuar fase 4 (legibilidad, enfoque, controles móviles) y, en coordinación con ADMINN-EMA, las pruebas reales de publicación y actualización en el lector.
+
+## Continuación de fase 4 — Navegación por teclado y salida accesible · 21/10/2026
+
+- `094b8e2`: módulo `src/keyboard.js` para acciones de lectura con flechas, PageUp/PageDown, Home, End y Escape.
+- `41246c3`: integración en `src/main.js`. Escape cierra primero el menú de modos si está abierto (y devuelve el foco al control); de lo contrario vuelve a la biblioteca. Las demás teclas navegan páginas o extremos sin interferir con campos editables, botones ni las regiones de narración desplazables.
+- `7d9fdb1`: `tests/teclado.test.mjs` garantiza el mapeo de acciones de navegación y la exclusión de teclas ajenas.
+- **Pruebas y build de `41246c3`**: ambos workflows de EMA aprobados, [Verificación web](https://github.com/martin30eler-sketch/EMA/actions/runs/39675417838) y [Verificar EMA web](https://github.com/martin30eler-sketch/EMA/actions/runs/39675418133). El commit posterior de tests debe confirmarse de nuevo.
+- **Despliegue de narración del bloque anterior**: Cloudflare Pages confirmó `success` para el commit de historial `e8b1a0e`, con los tests TTS anteriores incluidos.
+- La fase 4 sigue pendiente de aceptación manual en móviles/tabletas, giro de página y narración con voces reales; no se declara cerrada por tests unitarios solamente.
