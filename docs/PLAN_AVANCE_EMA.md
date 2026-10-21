@@ -39,3 +39,8 @@ El plan detallado del administrador está en `ADMINN-EMA/docs/PLAN_AVANCE_EMA.md
 
 ## Historial y criterio de cierre
 Registrar aquí cada avance relevante, el commit, las pruebas efectuadas y lo pendiente. No marcar una función como terminada sin comprobar su funcionamiento. Todos los cambios se hacen directamente en `main`.
+
+## Verificación automatizada · 21/10/2026
+- Incorporado workflow `.github/workflows/verificar-web.yml` en `main`, commit `36e0919`, con `npm ci`, `npm test` y `npm run build`.
+- Confirmada la presencia del archivo en GitHub. No se ha comprobado aún un resultado exitoso de ejecución ni el despliegue Cloudflare; fase W0 continúa abierta.
+- Próximo paso: verificar resultado de Actions, resolver errores y comprobar la versión de producción antes de cerrar W0.
