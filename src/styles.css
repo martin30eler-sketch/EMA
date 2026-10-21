@@ -471,3 +471,15 @@
   .reader-voice-controls .listen-btn{min-height:36px;padding:6px 10px}
   .reader-voice-options-panel{bottom:calc(100% + 5px);right:0}
 }
+
+/* Índice editorial de capítulos: lista accesible incluso con hasta 35 páginas. */
+.reader-modes-menu{width:min(295px,calc(100vw - 32px));max-height:min(65vh,480px);overflow-y:auto;overscroll-behavior:contain}
+.reader-chapter-option{
+ display:block;width:100%;min-height:40px;text-align:left;padding:9px 11px;
+ background:transparent;border:0;border-radius:7px;
+ font:14px/1.35 Georgia,serif;color:#28533c;white-space:normal;overflow-wrap:anywhere
+}
+.reader-chapter-option.selected{font-weight:700;background:#dfece0}
+.reader-chapter-option:hover,.reader-chapter-option:focus-visible{
+ background:#edf4ed;outline:2px solid #a47f4b;outline-offset:-2px
+}
