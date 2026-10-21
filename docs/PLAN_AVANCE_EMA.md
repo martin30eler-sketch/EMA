@@ -65,3 +65,9 @@ Registrar aquí cada avance relevante, el commit, las pruebas efectuadas y lo pe
 ## Ajuste adicional CI · 21/10/2026
 - `3bc4847`: se retira `cache: npm` del workflow de Actions al no existir `package-lock.json`, evitando el error de `setup-node` sin lockfile.
 - La consulta de estados del commit devuelve lista vacía: **pruebas CI aún sin resultado confirmado**, no marcar web lista para producción. Pendiente comprobar producción con navegación real y despliegue.
+
+## Coordinación de borradores privados con ADMINN-EMA · 21/10/2026
+- En el administrador se incorporaron el endpoint `/api/borrador`, el cliente de sincronización y sus controles de interfaz (commits `f6d349f`, `801d410`, `a509252`).
+- La arquitectura separa deliberadamente borradores privados en Cloudflare KV del catálogo y de los libros públicos bajo `EMA/public`. **No se agregó código de borradores privados al repositorio EMA**; solo debe recibir publicaciones aprobadas.
+- Para activar la sincronización aún falta vincular el binding `EMA_DRAFTS` al proyecto de Cloudflare correcto y verificar recuperación real entre dispositivos. Guía en `ADMINN-EMA/docs/BORRADORES_NUBE.md`.
+- Estado lector: conserva el contrato público v1/v2. Su verificación real en producción y las pruebas de navegación en móvil y escritorio siguen pendientes.
