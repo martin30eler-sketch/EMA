@@ -53,3 +53,31 @@ test('no anuncia narración si el motor falla o falta texto',()=>{
  assert.equal(narrator.state.playing,false);
  assert.equal(narrator.speak('  '),false);
 });
+
+test('la velocidad de la narración es configurable y se mantiene acotada',()=>{
+ const utterances=[];
+ const synth={speak:next=>utterances.push(next),cancel(){}};
+ const narrator=createNarrator(synth,text=>({text}));
+ narrator.speak('Lenta','es-ES',0.8);
+ narrator.speak('Rápida','es-ES',1.2);
+ narrator.speak('Incoherente','es-ES',Number.POSITIVE_INFINITY);
+ assert.deepEqual(utterances.map(voice=>voice.rate),[0.8,1.2,1]);
+});
+test('la continuación automática solo se dispara al terminar naturalmente la página vigente',()=>{
+ let completed=0;
+ const voices=[];
+ const narrator=createNarrator({speak:voice=>voices.push(voice),cancel(){}},
+  text=>({text}),()=>{},()=>completed++);
+ narrator.speak('Una página');
+ const previous=voices[0];
+ narrator.speak('La página siguiente');
+ previous.onend();
+ assert.equal(completed,0);
+ voices[1].onerror();
+ assert.equal(completed,0);
+ narrator.speak('Otra página');
+ voices[2].onend();
+ assert.equal(completed,1);
+ voices[2].onend();
+ assert.equal(completed,2);
+});
