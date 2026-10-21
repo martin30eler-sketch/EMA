@@ -54,3 +54,10 @@ Registrar aquí cada avance relevante, el commit, las pruebas efectuadas y lo pe
 - Nuevas pruebas en `tests/libros.test.mjs`, commits `52120bd`, `daf32a7` y `2d3fb8b` en `main`.
 - Casos añadidos: rechazo de tres escenas en una página, rechazo de texto de escena vacío, rechazo de geometría flotante fuera de límites y aceptación de dos escenas válidas.
 - Estado: implementado, pendiente de confirmar ejecución satisfactoria de GitHub Actions y despliegue Cloudflare.
+
+## Integración lector–administrador · 21/10/2026
+- `8ddf3ee`: el contrato público valida máximo 35 páginas, ID de hasta 80 caracteres y título de capítulo obligatorio en libros GPT v2. Converge con las restricciones del administrador.
+- `a38d1b6`: ampliación de pruebas para capítulos ausentes y exceso de páginas; se actualizan las fichas v2 válidas.
+- `a34fd17`: navegación robusta ante respuestas tardías al abrir libros; volver a biblioteca invalida cargas en curso. En escritorio, el formato legado `v1` usa apertura izquierda con imagen y hoja derecha con narración, girando exclusivamente esta última en modo clásico.
+- Coordinación: administrador `b8a44ff` conserva la agrupación de páginas original del JSON GPT y `008f25c` añade pruebas correspondientes.
+- **Pendiente:** resultados CI, pruebas manuales en móvil/escritorio y publicación/despliegue real; no constan como aprobados.
