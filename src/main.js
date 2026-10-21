@@ -2,7 +2,7 @@ import { validateCatalog, validateBook, readProgress, writeProgress } from './li
 import './styles.css';
 
 const app = document.getElementById('app');
-const state = { books: [], selected: null, page: 1, current: null, speech: false, moving: false, view: 'auto' };
+const state = { books: [], selected: null, page: 1, current: null, speech: false, moving: false, view: 'auto', requestId: 0 };
 const reducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)');
 const desktopSpread = window.matchMedia('(min-width: 681px)');
 const el = (tag, className, text) => {
@@ -46,6 +46,7 @@ function stopVoice() {
   state.speech = false;
 }
 function showLibrary(message) {
+  state.requestId += 1;
   stopVoice();
   state.selected = null;
   state.moving = false;
@@ -91,13 +92,18 @@ function showLibrary(message) {
   draw();
 }
 async function openBook(entry) {
+  const requestId=++state.requestId;
   stopVoice();
+  state.selected=null;
+  state.current=null;
+  state.moving=false;
   const main = shell();
   main.append(el('p', 'notice', 'Preparando el libro…'));
   try {
     const res = await fetch(entry.bookPath, { cache: 'no-cache' });
     if (!res.ok) throw Error('El archivo del libro no está disponible (' + res.status + ').');
     const book = validateBook(await res.json(), entry);
+    if(requestId!==state.requestId)return;
     state.selected = book;
     state.moving = false;
     state.page = readProgress(book.id, book.pages.length);
@@ -105,7 +111,7 @@ async function openBook(entry) {
     state.view = 'auto';
     renderReader();
   } catch (error) {
-    showLibrary('No se pudo abrir el libro: ' + error.message);
+    if(requestId===state.requestId)showLibrary('No se pudo abrir el libro: ' + error.message);
   }
 }
 function utterPage() {
@@ -264,7 +270,13 @@ function renderReader() {
   const canvas = el('div', 'book-perspective');
   const paper = el('div', 'flip-sheet');
   const view = state.view === 'auto' ? (book.schemaVersion === 2 ? 'ilustrada' : 'clasica') : state.view;
-  paper.append(view === 'ilustrada' && book.schemaVersion === 2 && desktopSpread.matches ? renderDesktopSpread(page) : view === 'ilustrada' && book.schemaVersion === 1 ? renderLegacyIllustrated(page) : view === 'clasica' && book.schemaVersion === 2 ? renderSceneClassic(page) : renderContent(page));
+  const content = desktopSpread.matches && view === 'clasica' && book.schemaVersion === 1
+    ? renderDesktopSpread({...page,scenes:[{image:page.image,text:page.text}]})
+    : view === 'ilustrada' && book.schemaVersion === 2 && desktopSpread.matches ? renderDesktopSpread(page)
+    : view === 'ilustrada' && book.schemaVersion === 1 ? renderLegacyIllustrated(page)
+    : view === 'clasica' && book.schemaVersion === 2 ? renderSceneClassic(page)
+    : renderContent(page);
+  paper.append(content);
   canvas.append(paper);
   area.append(canvas);
   main.append(area);
