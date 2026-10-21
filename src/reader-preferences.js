@@ -2,6 +2,7 @@
 const key='ema:lectura:preferencias';
 const defaults=Object.freeze({largeText:false,highContrast:false,voiceRate:1,autoNarrate:false});
 const rates=new Set([0.8,1,1.2]);
+const browserStorage=()=>{try{return globalThis.localStorage}catch{return null}};
 export function normalizeReaderPreferences(value){
  if(!value||typeof value!=='object'||Array.isArray(value))return {...defaults};
  return {
@@ -11,11 +12,11 @@ export function normalizeReaderPreferences(value){
   autoNarrate:value.autoNarrate===true
  };
 }
-export function readReaderPreferences(storage=globalThis.localStorage){
+export function readReaderPreferences(storage=browserStorage()){
  try{const json=storage?.getItem(key);return normalizeReaderPreferences(json?JSON.parse(json):null)}
  catch{return {...defaults}}
 }
-export function saveReaderPreferences(value,storage=globalThis.localStorage){
+export function saveReaderPreferences(value,storage=browserStorage()){
  try{if(!storage)return false;
   storage.setItem(key,JSON.stringify(normalizeReaderPreferences(value)));return true;
  }catch{return false}
