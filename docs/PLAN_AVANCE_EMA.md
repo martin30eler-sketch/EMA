@@ -80,3 +80,18 @@ Registrar aquí cada avance relevante, el commit, las pruebas efectuadas y lo pe
 - **Ambos workflows de Actions pasaron pruebas y Vite build**: [Verificación web EMA](https://github.com/martin30eler-sketch/EMA/actions/runs/39656951211) y [Verificar EMA web](https://github.com/martin30eler-sketch/EMA/actions/runs/39656951315).
 - Cloudflare Pages del proyecto público `ema` reportó despliegue canónico exitoso de la versión anterior y está enlazado a `EMA/main`; confirmar la actualización del último commit antes de marcar despliegue de esta auditoría como concluido.
 - Sigue pendiente probar interacciones reales en navegadores móvil/tablet/escritorio y publicación nueva desde ADMINN-EMA.
+
+## Avance directo fase 4 — Narración controlada y accesible · 21/10/2026
+
+**Objetivo:** mejorar el lector público en móvil y escritorio preservando la composición editorial y los formatos v1/v2 existentes.
+
+- `7fe420b`: nuevo `src/narration.js`, controlador autónomo de la síntesis de voz del dispositivo; reproduce, pausa, reanuda y detiene. Identifica cada generación de voz para ignorar `onend` o `onerror` tardíos cuando ya se cambió de página.
+- `8d2e6df`: `src/main.js` integra el controlador en la lectura de las escenas v1/v2; añade botones separados de escuchar/detener y pausar/reanudar con `aria-pressed`, deshabilitando pausa si no hay narración activa. Cambio de página y vuelta a la biblioteca cancelan el audio anterior.
+- `ba0f263`: controles TTS táctiles de al menos 44 px y adaptación a pantallas pequeñas; sin cambiar el libro abierto, la paginación ni los estilos editoriales de imagen/texto.
+- `2119c2e`: pruebas `tests/narracion.test.mjs` para reproducción, pausa, reanudación, parada, cambio de página, eventos tardíos y errores de inicio de TTS.
+- **GitHub Actions en `main`: aprobados** [Verificación web EMA](https://github.com/martin30eler-sketch/EMA/actions/runs/39674960819) y [Verificar EMA web](https://github.com/martin30eler-sketch/EMA/actions/runs/39674960970), con pruebas y compilación Vite.
+- **Cloudflare Pages:** tras el último commit, el check de despliegue aún estaba en curso en la primera consulta; se confirmará su resultado por separado.
+
+**Pendiente:** prueba manual de las voces disponibles, pausa/reanudación y controles en Android Chrome y escritorio; lectura íntegra en ambos formatos, contraste y verificación del giro exclusivo de hoja derecha con dispositivo real.
+
+**Siguiente paso del plan:** continuar fase 4 (legibilidad, enfoque, controles móviles) y, en coordinación con ADMINN-EMA, las pruebas reales de publicación y actualización en el lector.
