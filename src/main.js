@@ -339,12 +339,16 @@ function renderReader() {
       if(state.speech){stopVoice();utterPage();}
     });
     rateLabel.append(rateControl);
-    voiceControls.append(rateLabel);
+    const settings=el('details','reader-voice-options');
+    const settingsTrigger=el('summary','reader-voice-options-trigger','Opciones de voz');
+    const settingsPanel=el('div','reader-voice-options-panel');
     const autoLabel=el('label','reader-autonarrate');
     const autoInput=el('input');autoInput.type='checkbox';autoInput.checked=state.autoNarrate;
     autoInput.addEventListener('change',()=>{state.autoNarrate=autoInput.checked;});
     autoLabel.append(autoInput,el('span','','Seguir leyendo al terminar'));
-    voiceControls.append(autoLabel);
+    settingsPanel.append(rateLabel,autoLabel);
+    settings.append(settingsTrigger,settingsPanel);
+    voiceControls.append(settings);
     main.append(voiceControls);
     const note=el('p','reader-hint','Narración del dispositivo · Pausa, velocidad y avance automático opcional.');
     note.id='voice-notice';main.append(note);
@@ -358,7 +362,7 @@ document.addEventListener('keydown',event=>{
   if(!action)return;
   if(action==='exit'){
     event.preventDefault();
-    const openMenu=document.querySelector('.reader-modes[open]');
+    const openMenu=document.querySelector('.reader-modes[open],.reader-voice-options[open]');
     if(openMenu){
       openMenu.open=false;
       openMenu.querySelector('summary')?.focus();
