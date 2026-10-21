@@ -61,3 +61,7 @@ Registrar aquí cada avance relevante, el commit, las pruebas efectuadas y lo pe
 - `a34fd17`: navegación robusta ante respuestas tardías al abrir libros; volver a biblioteca invalida cargas en curso. En escritorio, el formato legado `v1` usa apertura izquierda con imagen y hoja derecha con narración, girando exclusivamente esta última en modo clásico.
 - Coordinación: administrador `b8a44ff` conserva la agrupación de páginas original del JSON GPT y `008f25c` añade pruebas correspondientes.
 - **Pendiente:** resultados CI, pruebas manuales en móvil/escritorio y publicación/despliegue real; no constan como aprobados.
+
+## Ajuste adicional CI · 21/10/2026
+- `3bc4847`: se retira `cache: npm` del workflow de Actions al no existir `package-lock.json`, evitando el error de `setup-node` sin lockfile.
+- La consulta de estados del commit devuelve lista vacía: **pruebas CI aún sin resultado confirmado**, no marcar web lista para producción. Pendiente comprobar producción con navegación real y despliegue.
