@@ -139,3 +139,17 @@ Registrar aquí cada avance relevante, el commit, las pruebas efectuadas y lo pe
 - **Pruebas:** `npm test` y `npm run build` aprobados por GitHub Actions para `c492ca6`; confirmar ambos workflows y Cloudflare Pages del último SHA por separado, sin anticipar su resultado.
 - **Pendiente W3/W5:** validación manual con lector de pantalla, contraste, teléfono y escritorio. Completar aceptación visual de giro exclusivo de hoja derecha, texto largo y páginas dobles.
 - **Siguiente:** terminar esos criterios del lector público y coordinar su cierre con la web editorial. Android sigue pospuesto hasta que ambas webs estén cerradas y verificadas.
+
+## Aceptación del lector y cierre de contrato de imágenes · 22/10/2026
+
+**Prueba manual confirmada por el administrador:** informó que el lector público, la experiencia móvil y de escritorio, la narración, las páginas dobles y la fidelidad de los textos **ya estaban probados**. Registrar esa aceptación sin solicitar de nuevo las mismas pruebas. La publicación y eliminación básicas del panel también fueron confirmadas previamente.
+
+**Desarrollo fase W5 (seguridad del contrato público):**
+- `a16f246`: `src/libros.js` deja de aceptar una portada o ilustración cuya ruta solo empiece por el ID del libro; exige `portada.<ext>`, `pagina-NNN.<ext>` para libros v1 y `escena-NNN.<ext>` con numeración **secuencial por escena**, incluso al cambiar de capítulo, para v2.
+- `3b2a0c4`: `tests/libros.test.mjs` comprueba que portadas erróneas, páginas con numeración cambiada y escenas intercambiadas se rechazan, y que el libro v2 ordenado sigue siendo válido.
+- No se modificaron ni publicaron libros, ni se alteró el formato Gemini. La validación se realizó previamente contra las rutas de los dos libros actuales: coincidían con la secuencia esperada.
+- `069f583`: `docs/PLAN_INTEGRAL_WEB.md` registra los recorridos ya aceptados por el administrador; quedan como trabajo W5 seguridad y cierre, **no volver a probar manualmente lo que ya validó**.
+- **Verificación:** los dos workflows GitHub Actions pasaron en `069f583`, con pruebas y compilación. [Verificación web](https://github.com/martin30eler-sketch/EMA/actions/runs/39864209631) y [Verificar EMA web](https://github.com/martin30eler-sketch/EMA/actions/runs/39864209554).
+- **Despliegue:** el check de Cloudflare Pages debe confirmarse para el commit final documental antes de declararlo verificado; se consultan checks de GitHub cuando la conexión Cloudflare carece de permisos para esta cuenta.
+
+**Siguiente:** terminar seguridad y criterios W5 de ambas webs, registrar evidencia de despliegues y resolver únicamente fallos concretos. Android sigue condicionado al cierre conjunto, no a repetir pruebas manuales aprobadas.
