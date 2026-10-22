@@ -153,3 +153,10 @@ Registrar aquí cada avance relevante, el commit, las pruebas efectuadas y lo pe
 - **Despliegue:** el check de Cloudflare Pages debe confirmarse para el commit final documental antes de declararlo verificado; se consultan checks de GitHub cuando la conexión Cloudflare carece de permisos para esta cuenta.
 
 **Siguiente:** terminar seguridad y criterios W5 de ambas webs, registrar evidencia de despliegues y resolver únicamente fallos concretos. Android sigue condicionado al cierre conjunto, no a repetir pruebas manuales aprobadas.
+
+### Aceptación funcional de integración con ADMINN-EMA · 22/10/2026
+
+- El administrador confirmó que **eliminó una historia y volvió a publicarla sin problemas**. Se acepta el flujo funcional de retirada y nueva publicación de la historia; también están confirmadas publicación normal y bloqueo de duplicados mientras el ID sigue publicado.
+- La aceptación procede de su prueba real, no de una publicación o eliminación ejecutada desde esta sesión. No se registró el identificador exacto antes y después de borrar; no afirmar que se corroboró el mismo UUID o slug mediante API.
+- `5dcc352`: `docs/PLAN_INTEGRAL_WEB.md` actualiza W4 para no pedir que se repitan operaciones aprobadas. Siguen separados los pendientes de edición de publicaciones, eventual caché o seguridad operativa en caso de incidentes concretos.
+- No se modificó código del lector ni catálogo, ni se eliminó ninguna publicación desde herramientas. El siguiente desarrollo continúa sobre el cierre W5 de ambas webs.
