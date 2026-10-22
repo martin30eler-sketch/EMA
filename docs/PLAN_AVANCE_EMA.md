@@ -129,3 +129,13 @@ Registrar aquí cada avance relevante, el commit, las pruebas efectuadas y lo pe
 - Verificar con navegador y lector de pantalla el foco, las transiciones visuales y giro exclusivo de hoja derecha. No marcar fase cerrada por CI solamente.
 - **W4 Integración editorial:** completar en sesión autorizada el ciclo de publicar libro piloto, comprobar GitHub→Cloudflare→EMA, respaldar ZIP, retirar y republicar, sin tocar los libros actuales sin autorización.
 - Android sigue bloqueado hasta el cierre probado de ambas webs.
+
+## Continuación del cierre web — recuperación accesible de ilustraciones · 22/10/2026
+
+- **Aceptación comunicada por el administrador:** las operaciones de **publicar y eliminar** desde el panel ADMINN-EMA funcionaron correctamente. Este resultado está registrado en `ADMINN-EMA/docs/PLAN_AVANCE_EMA.md`. No repetir esas pruebas básicas ni modificar publicaciones reales desde las herramientas.
+- `ed1725c`: nuevo `src/image-fallback.js`. El contenedor de una imagen fallida ya no incluye un botón dentro de `role="img"`, una estructura que ocultaba la acción interactiva a lectores de pantalla. La descripción accesible de la ilustración y el botón «Reintentar imagen» son hermanos independientes.
+- `c492ca6`: integración en `src/main.js`; las portadas continúan sin botón interno para no introducir un control dentro de la tarjeta clicable. La imagen fallida se puede reintentar mediante teclado o toque desde el lector.
+- `671d8bf`: test de regresión `tests/image-fallback.test.mjs` para descripción alternativa, acción accesible y ausencia de botones anidados.
+- **Pruebas:** `npm test` y `npm run build` aprobados por GitHub Actions para `c492ca6`; confirmar ambos workflows y Cloudflare Pages del último SHA por separado, sin anticipar su resultado.
+- **Pendiente W3/W5:** validación manual con lector de pantalla, contraste, teléfono y escritorio. Completar aceptación visual de giro exclusivo de hoja derecha, texto largo y páginas dobles.
+- **Siguiente:** terminar esos criterios del lector público y coordinar su cierre con la web editorial. Android sigue pospuesto hasta que ambas webs estén cerradas y verificadas.
