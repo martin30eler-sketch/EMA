@@ -5,6 +5,7 @@ import {swipePageAction,isReaderSwipeTarget} from './swipe.js';
 import {chapterStarts,currentChapter} from './chapters.js';
 import {isFavorite,toggleFavorite,hasReadingProgress} from './favorites.js';
 import {readReaderPreferences,saveReaderPreferences} from './reader-preferences.js';
+import {createMissingIllustration} from './image-fallback.js';
 import './styles.css';
 
 const app = document.getElementById('app');
@@ -39,15 +40,9 @@ function createImg(src, alt, className, retry=false) {
   img.loading = 'lazy';
   img.decoding = 'async';
   img.addEventListener('error',()=>{
-    const missing=el('div',className+' illustration-fallback');
-    missing.setAttribute('role','img');
-    missing.setAttribute('aria-label',alt+'. Ilustración no disponible.');
-    missing.append(el('span','','Ilustración temporalmente no disponible'));
-    if(className!=='cover'){
-      missing.append(button('Reintentar imagen','image-retry',()=>{
-        missing.replaceWith(createImg(src,alt,className,true));
-      }));
-    }
+    const missing=createMissingIllustration(document,{className,alt,onRetry:()=>{
+      missing.replaceWith(createImg(src,alt,className,true));
+    }});
     img.replaceWith(missing);
   },{once:true});
   return img;
