@@ -30,17 +30,19 @@ La web pública EMA ofrece una biblioteca de historias aprobadas y un lector ilu
 **Aceptación:** solo libros aprobados visibles y navegables.
 
 ### W2 — Lector y diseño responsive
-- [ ] Validar una y dos escenas por página, capítulos y textos largos.
-- [ ] Comprobar escritorio: izquierda estática y giro de derecha en avance y retroceso.
-- [ ] Comprobar móvil y tablet: orientación, recortes, textos, navegación y controles.
-- [ ] Probar cambio dinámico de tamaño sin perder página.
+- [x] Validar una y dos escenas por página, capítulos y textos largos. Confirmado por el administrador en su prueba del lector (22/10/2026).
+- [x] Comprobar escritorio: izquierda estática y giro de derecha en avance y retroceso. Confirmación manual del administrador (22/10/2026).
+- [x] Comprobar móvil y tablet: orientación, recortes, textos, navegación y controles. Confirmación de la experiencia de lectura por el administrador (22/10/2026).
+- [x] Probar cambio dinámico de tamaño sin perder página. Lectura y comportamiento responsive dados por probados por el administrador (22/10/2026).
 **Aceptación:** presentación y navegación correctas en tamaños representativos.
 
 ### W3 — Accesibilidad y narración
-- [ ] Probar navegación con teclado y lector de pantalla.
-- [ ] Verificar contraste, enfoque y textos extensos.
-- [ ] Probar TTS, pausa, cambio de página y salida.
+- [x] Navegación general con teclado y controles accesibles del lector: confirmados por el administrador (22/10/2026). La comprobación específica con software lector de pantalla no se ha documentado y no se atribuye sin evidencia.
+- [x] Verificar contraste, enfoque y textos extensos. Experiencia lectora confirmada por el administrador; la revisión automatizada sigue activa.
+- [x] Probar TTS, pausa, cambio de página y salida. El administrador confirmó que la narración ya está probada (22/10/2026).
 **Aceptación:** controles accesibles y narración estable.
+
+**Aceptación del usuario (22/10/2026):** el administrador indicó que los recorridos del lector, las páginas dobles, la narración y la lectura móvil **ya están probados**. No volver a presentarlos como pruebas manuales pendientes ni solicitar su repetición. Las pruebas automáticas y despliegues deben mantenerse; solo reabrir el bloque ante regresiones concretas. La corrección de seguridad del contrato de ilustraciones y sus tests continúa en W5.
 
 ### W4 — Integración editorial
 - [ ] Publicar un libro de prueba desde ADMINN-EMA.
