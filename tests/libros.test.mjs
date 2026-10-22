@@ -16,3 +16,26 @@ test('acepta una página v2 con dos escenas y posiciones válidas',()=>{const b=
 
 test('rechaza capítulo ausente en v2',()=>{const b=makeBook();b.schemaVersion=2;b.pages=b.pages.map((p,i)=>({number:i+1,chapterTitle:'Historia',scenes:[{text:p.text,image:p.image}]}));delete b.pages[0].chapterTitle;assert.throws(()=>validateBook(b,entry));});
 test('catálogo rechaza más de 35 páginas',()=>{assert.throws(()=>validateCatalog({schemaVersion:1,books:[{...entry,pageCount:36}]}));});
+
+test('rechaza portadas, páginas y escenas con rutas ajenas o números cambiados',()=>{
+  const badCatalog={...entry,cover:'/libros/un-libro/escena-001.jpg'};
+  assert.throws(()=>validateCatalog({schemaVersion:1,books:[badCatalog]}),/ficha incorrecta/);
+  const legacy=makeBook();
+  legacy.pages[0].image='/libros/un-libro/pagina-002.jpg';
+  assert.throws(()=>validateBook(legacy,entry),/página 1/);
+  const v2={...makeBook(),schemaVersion:2,pages:[
+    {number:1,chapterTitle:'Inicio',scenes:[
+      {text:'Primera',image:'/libros/un-libro/escena-002.jpg'},
+      {text:'Segunda',image:'/libros/un-libro/escena-001.jpg'}
+    ]},
+    {number:2,chapterTitle:'Final',scenes:[
+      {text:'Última',image:'/libros/un-libro/escena-003.jpg'}
+    ]}
+  ]};
+  assert.throws(()=>validateBook(v2,entry),/página 1/);
+  v2.pages[0].scenes[0].image='/libros/un-libro/escena-001.jpg';
+  v2.pages[0].scenes[1].image='/libros/un-libro/escena-002.jpg';
+  assert.equal(validateBook(v2,entry),v2);
+  v2.pages[1].scenes[0].image='/libros/un-libro/escena-002.jpg';
+  assert.throws(()=>validateBook(v2,entry),/página 2/);
+});
