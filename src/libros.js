@@ -3,9 +3,9 @@
  * El navegador solo consume rutas internas de Cloudflare Pages, nunca Firebase ni GitHub.
  */
 const ID = /^[a-z0-9]+(?:-[a-z0-9]+)*$/;
-const asset = (id, name) => typeof name === 'string' &&
-  name.startsWith('/libros/' + id + '/') && !name.includes('..') &&
-  !name.includes('?') && !name.includes('#') && !name.includes('\\');
+const imagePath = (id,stem,name) => typeof name === 'string' &&
+  ['jpg','png','webp'].some(ext => name === '/libros/' + id + '/' + stem + '.' + ext);
+const pad = number => String(number).padStart(3,'0');
 
 const titleOK = value => typeof value === 'string' && value.trim().length > 0 && value.length <= 240;
 const layoutOK = layout => layout == null || (typeof layout === 'object' && !Array.isArray(layout) &&
@@ -20,7 +20,7 @@ export function validateCatalog(input) {
     if (!entry || !ID.test(entry.id || '') || known.has(entry.id) ||
       entry.id.length > 80 || !titleOK(entry.title) || !titleOK(entry.author) ||
       !Number.isInteger(entry.pageCount) || entry.pageCount < 1 || entry.pageCount > 35 ||
-      !asset(entry.id, entry.cover) ||
+      !imagePath(entry.id,'portada',entry.cover) ||
       entry.bookPath !== '/libros/' + entry.id + '/libro.json') {
       throw Error('El catálogo contiene una ficha incorrecta.');
     }
@@ -34,16 +34,17 @@ export function validateBook(book, entry) {
       book.title !== entry.title || book.author !== entry.author ||
       book.cover !== entry.cover || !Array.isArray(book.pages) ||
       book.pages.length !== entry.pageCount || book.pages.length > 35) throw Error('El libro no coincide con el catálogo.');
+  let sceneIndex=0;
   book.pages.forEach((page, index) => {
     if (book.schemaVersion === 2) {
       if (!page || page.number !== index + 1 || typeof page.chapterTitle !== 'string' || !Array.isArray(page.scenes) || !page.scenes.length || page.scenes.length > 2 ||
-          page.scenes.some(scene => !scene || !asset(book.id, scene.image) || typeof scene.text !== 'string' || !scene.text.trim() || !layoutOK(scene.layout) || ![undefined,'integrated','floating'].includes(scene.captionMode))) {
+          page.scenes.some(scene => !scene || !imagePath(book.id,'escena-'+pad(++sceneIndex),scene.image) || typeof scene.text !== 'string' || !scene.text.trim() || !layoutOK(scene.layout) || ![undefined,'integrated','floating'].includes(scene.captionMode))) {
         throw Error('Falta texto editable o ilustración en la página ' + (index + 1) + '.');
       }
       return;
     }
     if (!page || page.number !== index + 1 || typeof page.text !== 'string' ||
-        !page.text.trim() || !asset(book.id, page.image)) {
+        !page.text.trim() || !imagePath(book.id,'pagina-'+pad(index+1),page.image)) {
       throw Error('Falta texto o ilustración en la página ' + (index + 1) + '.');
     }
   });
