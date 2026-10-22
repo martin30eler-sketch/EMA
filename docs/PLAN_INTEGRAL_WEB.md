@@ -45,10 +45,11 @@ La web pública EMA ofrece una biblioteca de historias aprobadas y un lector ilu
 **Aceptación del usuario (22/10/2026):** el administrador indicó que los recorridos del lector, las páginas dobles, la narración y la lectura móvil **ya están probados**. No volver a presentarlos como pruebas manuales pendientes ni solicitar su repetición. Las pruebas automáticas y despliegues deben mantenerse; solo reabrir el bloque ante regresiones concretas. La corrección de seguridad del contrato de ilustraciones y sus tests continúa en W5.
 
 ### W4 — Integración editorial
-- [ ] Publicar un libro de prueba desde ADMINN-EMA.
-- [ ] Comprobar commit GitHub, despliegue Cloudflare y aparición en catálogo.
-- [ ] Verificar texto, imagen y layout de todas las escenas.
-- [ ] Probar edición de libro publicado, eliminación y republicación sin caché obsoleta.
+- [x] Publicar un libro desde ADMINN-EMA: publicación real confirmada por el administrador el 22/10/2026.
+- [x] Comprobar commit GitHub, despliegue Cloudflare y aparición en catálogo: CI y check Pages aprobados; aparición del libro confirmada por el administrador.
+- [x] Verificar fidelidad de textos, imágenes y páginas del lector: aceptación manual del administrador (22/10/2026); tests de contrato en CI.
+- [x] Probar eliminación de una publicación: confirmada por el administrador (22/10/2026).
+- [ ] Probar específicamente edición publicada y republicación del mismo ID, sin caché obsoleta; no repetir publicación o eliminación básicas.
 **Aceptación:** ciclo editorial completo y verificado.
 
 ### W5 — Cierre web
@@ -64,7 +65,7 @@ La publicación se produce exclusivamente por backend autenticado de ADMINN-EMA.
 Registrar cada entrega con commit, pruebas ejecutadas, despliegue y pendientes en [PLAN_AVANCE_EMA.md](./PLAN_AVANCE_EMA.md). Estado de tarea: pendiente, implementado sin verificar, probado, desplegado, cerrado. No declarar cierre sin evidencia.
 
 ## Riesgos y dependencias
-- El almacenamiento privado de borradores depende de ADMINN-EMA y aún está pendiente.
+- El almacenamiento privado en ADMINN-EMA ya usa Workers KV; la recuperación PC → móvil se confirmó por el administrador el 22/10/2026. La consistencia eventual en conflictos entre regiones sigue siendo un riesgo específico.
 - El editor debe conservar posiciones de cuadros que el lector soporte.
 - No alterar el flujo Gemini HTML + ZIP del administrador.
 - Validar cambios visuales con navegador real, no solo con lectura de código.
