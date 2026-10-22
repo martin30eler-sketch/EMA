@@ -49,7 +49,8 @@ La web pública EMA ofrece una biblioteca de historias aprobadas y un lector ilu
 - [x] Comprobar commit GitHub, despliegue Cloudflare y aparición en catálogo: CI y check Pages aprobados; aparición del libro confirmada por el administrador.
 - [x] Verificar fidelidad de textos, imágenes y páginas del lector: aceptación manual del administrador (22/10/2026); tests de contrato en CI.
 - [x] Probar eliminación de una publicación: confirmada por el administrador (22/10/2026).
-- [ ] Probar específicamente edición publicada y republicación del mismo ID, sin caché obsoleta; no repetir publicación o eliminación básicas.
+- [x] Eliminar una historia y volver a publicarla correctamente: confirmado por el administrador el 22/10/2026. No volver a solicitar esa prueba; sin verificación independiente del identificador exacto de ambas operaciones.
+- [ ] Probar específicamente edición publicada y resolución de caché obsoleta o conflictos si aparecen casos reales; no repetir publicación, eliminación ni nueva publicación básicas.
 **Aceptación:** ciclo editorial completo y verificado.
 
 ### W5 — Cierre web
