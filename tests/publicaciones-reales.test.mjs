@@ -7,6 +7,17 @@ import {validateCatalog,validateBook} from '../src/libros.js';
 const root=resolve('public');
 const entries=validateCatalog(JSON.parse(await readFile(join(root,'catalogo.json'),'utf8')));
 
+function imageSignatureValid(bytes,ext){
+ if(ext==='jpg')return bytes.length>=4&&bytes[0]===255&&bytes[1]===216&&bytes[2]===255;
+ if(ext==='png')return bytes.length>=8&&
+   [137,80,78,71,13,10,26,10].every((v,i)=>bytes[i]===v);
+ if(ext==='webp')return bytes.length>=12&&
+   bytes.subarray(0,4).toString('ascii')==='RIFF'&&
+   bytes.subarray(8,12).toString('ascii')==='WEBP';
+ return false;
+}
+
+
 test('biblioteca pública contiene exclusivamente libros con ID y título únicos',()=>{
  const ids=entries.map(item=>item.id);
  assert.equal(new Set(ids).size,ids.length);
@@ -30,6 +41,13 @@ for(const entry of entries){
    for(const name of expected){
      const file=await stat(join(folder,name));
      assert.ok(file.isFile()&&file.size>0,'Archivo vacío o inválido: '+name);
+   }
+   for(const picture of images){
+     const name=basename(picture);
+     const ext=name.split('.').pop().toLowerCase();
+     const handle=await readFile(join(folder,name));
+     assert.ok(imageSignatureValid(handle,ext),
+       'La ilustración '+name+' del libro '+entry.id+' tiene una firma de imagen inválida.');
    }
    const actual=await readdir(folder);
    assert.deepEqual(actual.sort(),[...expected].sort(),
