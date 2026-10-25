@@ -160,3 +160,12 @@ Registrar aquí cada avance relevante, el commit, las pruebas efectuadas y lo pe
 - La aceptación procede de su prueba real, no de una publicación o eliminación ejecutada desde esta sesión. No se registró el identificador exacto antes y después de borrar; no afirmar que se corroboró el mismo UUID o slug mediante API.
 - `5dcc352`: `docs/PLAN_INTEGRAL_WEB.md` actualiza W4 para no pedir que se repitan operaciones aprobadas. Siguen separados los pendientes de edición de publicaciones, eventual caché o seguridad operativa en caso de incidentes concretos.
 - No se modificó código del lector ni catálogo, ni se eliminó ninguna publicación desde herramientas. El siguiente desarrollo continúa sobre el cierre W5 de ambas webs.
+
+## P5 · Protección de recursos públicos · 25/10/2026
+
+- **Código/pruebas:** commit `11f0685` actualiza `tests/publicaciones-reales.test.mjs`. Recorre los libros realmente incluidos en `public/catalogo.json`, valida el contrato JSON v1/v2 y, además de exigir cada imagen existente, comprueba la firma real JPEG, PNG o WEBP de las portadas y escenas. El fallo bloquea CI antes del despliegue en caso de ilustración dañada.
+- **Sin cambios** en el código visual del lector, en las historias publicadas ni en los textos o archivos originales. Las pruebas manuales de lectura y narración ya aceptadas no se repiten.
+- **CI verificado:** ambos workflows `Verificar EMA web` y `Verificación web EMA` finalizaron con éxito para `11f0685`: [verificación](https://github.com/martin30eler-sketch/EMA/actions/runs/40173243817), [pruebas](https://github.com/martin30eler-sketch/EMA/actions/runs/40173243780).
+- **Integración con ADMINN-EMA:** el publicador privado ahora verifica las mismas firmas JPEG/PNG/WEBP, límite individual de 6,75 MiB y total 24 MiB antes de confirmar archivos; si falla, no modifica GitHub EMA. Se integraron tests de regresión. El importador Gemini original no cambió.
+- **Despliegue Cloudflare:** el check de Pages del commit de código estaba `in_progress` al consultarse inicialmente. Confirmar resultado antes de declarar desplegado el SHA final.
+- **Siguiente:** continuar P5 con evidencia de despliegues y requisitos operativos pendientes; Android queda aplazado hasta cierre verificado de ambas webs.
