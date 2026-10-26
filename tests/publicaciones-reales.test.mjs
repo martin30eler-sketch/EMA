@@ -54,3 +54,23 @@ for(const entry of entries){
      'Hay recursos de la publicación faltantes o sobrantes.');
  });
 }
+
+
+test('una publicación eliminada no deja libros accesibles fuera del catálogo',async()=>{
+ let folders;
+ try{folders=await readdir(join(root,'libros'),{withFileTypes:true})}
+ catch(error){
+   if(error.code==='ENOENT'){
+     assert.equal(entries.length,0,'Sin carpeta de libros no debe haber fichas publicadas');
+     return;
+   }
+   throw error;
+ }
+ const active=new Set(entries.map(entry=>entry.id));
+ for(const folder of folders){
+   assert.ok(folder.isDirectory(),'Archivo inesperado en carpeta pública libros: '+folder.name);
+   assert.ok(active.has(folder.name),
+     'Un libro no listado en el catálogo sigue siendo público: '+folder.name);
+ }
+ assert.equal(folders.length,active.size,'Cada ficha debe corresponder a una sola carpeta publicada');
+});
