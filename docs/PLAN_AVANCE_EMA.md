@@ -169,3 +169,26 @@ Registrar aquí cada avance relevante, el commit, las pruebas efectuadas y lo pe
 - **Integración con ADMINN-EMA:** el publicador privado ahora verifica las mismas firmas JPEG/PNG/WEBP, límite individual de 6,75 MiB y total 24 MiB antes de confirmar archivos; si falla, no modifica GitHub EMA. Se integraron tests de regresión. El importador Gemini original no cambió.
 - **Despliegue Cloudflare:** el check de Pages del commit de código estaba `in_progress` al consultarse inicialmente. Confirmar resultado antes de declarar desplegado el SHA final.
 - **Siguiente:** continuar P5 con evidencia de despliegues y requisitos operativos pendientes; Android queda aplazado hasta cierre verificado de ambas webs.
+
+
+## W0/W1/W5 · Actualización segura de libros y endurecimiento público · 26/10/2026
+
+**Cambios funcionales en `EMA/main`:**
+
+- **`0ca5029`** — `src/public-json.js`, `src/main.js`, `tests/public-json.test.mjs`. Catálogo y libro JSON se consultan con URL de versión efímera y `cache:'no-store'`, sin alterar las rutas públicas del contrato. Evita que un ejemplar ya editado se siga leyendo desde una versión JSON obsoleta de la caché del CDN o del navegador. Las portadas y escenas mantienen su caché y sus nombres, sin forzar descargas innecesarias.
+- **`a6f939f`** — `src/libros.js`, `tests/libros.test.mjs`. El lector valida máximo 10.000 caracteres por narración de página v1 o escena v2, idéntico al contrato editorial del publicador. No recorta textos: acepta íntegramente narraciones válidas y bloquea solo recursos JSON fuera de contrato.
+- **`c7b1e41`** — `public/_headers`, `tests/headers-seguridad.test.mjs`. Cloudflare Pages añade CSP restrictiva (`default-src 'self'`, `object-src 'none'`, `base-uri 'self'`, `form-action 'self'`) y `Permissions-Policy` que deshabilita cámara, micrófono y geolocalización, innecesarios para leer o usar TTS. Preserva `nosniff`, política de referrer y caché de imágenes.
+- **`a94ba9d`** — `tests/publicaciones-reales.test.mjs`. CI verifica que ningún directorio de libro eliminado siga accesible bajo `public/libros` sin ficha en el catálogo, además de la prueba existente de firmas y rutas de todas las imágenes.
+
+**Verificación objetiva de cada bloque de código en GitHub `main`:**
+
+| Commit | Tests + build | Cloudflare Pages |
+| --- | --- | --- |
+| `0ca5029` | success, [verify](https://github.com/martin30eler-sketch/EMA/actions/runs/40313415822), [calidad](https://github.com/martin30eler-sketch/EMA/actions/runs/40313415829) | success; despliegue `626fc66d-4e61-498c-9007-7405ae425c42` |
+| `a6f939f` | success, [verify](https://github.com/martin30eler-sketch/EMA/actions/runs/40313693194), [calidad](https://github.com/martin30eler-sketch/EMA/actions/runs/40313693187) | success; despliegue `1e6c93ea-4bb7-441a-a6e3-f8846bee03bc` |
+| `c7b1e41` | success, [verify](https://github.com/martin30eler-sketch/EMA/actions/runs/40313802909), [calidad](https://github.com/martin30eler-sketch/EMA/actions/runs/40313802895) | success; despliegue `97d9465e-2292-4221-9285-93b0fcf6309e` |
+| `a94ba9d` | success, [verify](https://github.com/martin30eler-sketch/EMA/actions/runs/40314051800), [calidad](https://github.com/martin30eler-sketch/EMA/actions/runs/40314051752) | success; despliegue `f63ba489-f87b-4ba0-b92b-b6fef5b627b2` |
+
+**Distinción:** el check Cloudflare reporta despliegue exitoso del commit; una comprobación manual de los encabezados HTTP desde el navegador real no se ha afirmado. La aceptación de publicación, eliminación, republicación, narración, lectura móvil y escritorio de 22/10/2026 se conserva y **no se solicita repetir**. No se modificaron `public/catalogo.json`, historias, imágenes, Gemini ni `EMA_app`.
+
+**Siguiente:** cerrar los puntos W0/W5 que todavía requieran evidencia operativa no automatizada y coordinar el cierre con `ADMINN-EMA`. La edición de un libro publicado se trata como integración, no como nueva prueba obligatoria de operaciones ya aprobadas.

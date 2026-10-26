@@ -18,7 +18,7 @@ La web pública EMA ofrece una biblioteca de historias aprobadas y un lector ilu
 
 ## Fases, tareas y criterios de cierre
 ### W0 — Estabilidad y despliegue
-- [ ] Ejecutar tests y compilación del repo.
+- [x] Ejecutar tests y compilación del repo. Verificados en GitHub Actions sobre `a94ba9d`, 26/10/2026.
 - [ ] Verificar que Cloudflare despliega el commit de `main` y la versión visible coincide.
 - [ ] Resolver errores de consola, carga y recursos.
 **Aceptación:** build y despliegue exitosos con evidencia.
@@ -70,3 +70,5 @@ Registrar cada entrega con commit, pruebas ejecutadas, despliegue y pendientes e
 - El editor debe conservar posiciones de cuadros que el lector soporte.
 - No alterar el flujo Gemini HTML + ZIP del administrador.
 - Validar cambios visuales con navegador real, no solo con lectura de código.
+
+**Control de cambios W0/W5 (26/10/2026):** se corrigió la entrega de JSON obsoleto después de publicación/edición, se validaron límites editoriales de narración, se activaron encabezados CSP y permisos mínimos, y se añadió prevención automatizada de carpetas huérfanas de publicaciones retiradas. GitHub Actions y Cloudflare Pages reportan `success` para los cuatro commits, último `a94ba9d`. La aceptación funcional del 22/10 sigue vigente; no reabrirla sin una regresión demostrable. Evidencia detallada en `PLAN_AVANCE_EMA.md`.
