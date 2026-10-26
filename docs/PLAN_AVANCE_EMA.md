@@ -208,3 +208,19 @@ Registrar aquí cada avance relevante, el commit, las pruebas efectuadas y lo pe
 **Estado W0/W1:** despliegue correcto y biblioteca pública real disponible; comprobación puntual de encabezados pendiente de evidencia, no de implementación. **No repetir las pruebas de lectura, narración y publicación ya aceptadas el 22/10**. No se modificaron libros, catálogos ni imágenes.
 
 **Siguiente:** obtener evidencia de encabezados HTTP desde una herramienta con acceso de red apropiado y cerrar formalmente W0/W5 junto a ADMINN-EMA.
+
+
+## Cierre de verificación HTTP externa de producción · 26/10/2026
+
+**Ejecución HTTP real desde GitHub Actions** (runner externo a Cloudflare): [workflow «Verificación HTTP de producción EMA»](https://github.com/martin30eler-sketch/ADMINN-EMA/actions/runs/40322718152), job `smoke-publico-privado`, **success**, logs 26/10/2026 12:27–12:28 UTC.
+
+- EMA `GET /`: **HTTP 200**, `text/html`, título de la web correcto.
+- Cabeceras HTTP reales de EMA confirmadas: `X-Content-Type-Options: nosniff`, `Referrer-Policy: strict-origin-when-cross-origin`, `Content-Security-Policy: default-src 'self'; object-src 'none'; base-uri 'self'; form-action 'self'`, `Permissions-Policy: camera=(), microphone=(), geolocation=()`.
+- `GET /catalogo.json`: **HTTP 200 application/json**, contrato `schemaVersion:1`, **2 libros**. `GET` del JSON de cada uno: **200 application/json**, mismos ID/título/autor/cantidad de páginas que el catálogo.
+- **21 archivos de imagen** (portadas y escenas/páginas): todas las solicitudes `HEAD` finalizaron en **HTTP 200 image/jpeg**, sin imágenes ausentes ni fallbacks HTML.
+- Integración externa del panel: `GET https://adminn-ema.pages.dev/api/catalogo`: **HTTP 200**, mismas dos fichas. La API privada rechazó GET sin Firebase (`/api/borrador`, `/api/editar-libro`, `/api/estado-publicacion`: 403); los métodos de lectura para publicador y eliminador devuelven 405. El panel anónimo solo muestra inicio de sesión con Google.
+- La prueba se agregó en `ADMINN-EMA/main`: commit `04fe91f61a4c8614c6fea4a4a1ba02b893715030`, archivos `scripts/verify-production-http.mjs` y `.github/workflows/verificar-produccion.yml`. GitHub Actions del mismo SHA **smoke, pruebas, build y Cloudflare Pages: success**.
+
+**Criterios cubiertos:** entrega real GitHub → Cloudflare, disponibilidad de catálogo/JSON/imágenes, encabezados de seguridad y denegación de APIs sin token. Se corrigió la falta anterior de evidencia directa de encabezados. Las pruebas manuales editoriales y de narración ya aceptadas por el administrador no se repiten.
+
+**Pendiente fuera de esta verificación:** cualquier criterio de cierre manual o seguridad no cubierto por el flujo anterior, si está expresamente definido en el plan y no tiene aceptación anterior. No ejecutar acciones destructivas ni pasar a Android hasta cierre coordinado.

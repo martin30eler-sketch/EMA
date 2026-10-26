@@ -19,7 +19,7 @@ La web pública EMA ofrece una biblioteca de historias aprobadas y un lector ilu
 ## Fases, tareas y criterios de cierre
 ### W0 — Estabilidad y despliegue
 - [x] Ejecutar tests y compilación del repo. Verificados en GitHub Actions sobre `a94ba9d`, 26/10/2026.
-- [ ] Verificar que Cloudflare despliega el commit de `main` y la versión visible coincide.
+- [x] Verificar que Cloudflare despliega el commit de `main` y la versión visible coincide. Confirmados en Cloudflare y HTTP real el 26/10/2026.
 - [ ] Resolver errores de consola, carga y recursos.
 **Aceptación:** build y despliegue exitosos con evidencia.
 
@@ -55,7 +55,7 @@ La web pública EMA ofrece una biblioteca de historias aprobadas y un lector ilu
 
 ### W5 — Cierre web
 - [ ] Ejecutar pruebas automatizadas y manuales de regresión.
-- [ ] Documentar evidencia de aceptación, errores corregidos y despliegue.
+- [x] Documentar evidencia de aceptación, errores corregidos y despliegue. Logs HTTP directos y Cloudflare, 26/10/2026.
 - [ ] Confirmar cierre coordinado con ADMINN-EMA antes de iniciar Android.
 **Aceptación:** ningún fallo crítico o prioritario pendiente.
 
