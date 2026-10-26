@@ -192,3 +192,19 @@ Registrar aquí cada avance relevante, el commit, las pruebas efectuadas y lo pe
 **Distinción:** el check Cloudflare reporta despliegue exitoso del commit; una comprobación manual de los encabezados HTTP desde el navegador real no se ha afirmado. La aceptación de publicación, eliminación, republicación, narración, lectura móvil y escritorio de 22/10/2026 se conserva y **no se solicita repetir**. No se modificaron `public/catalogo.json`, historias, imágenes, Gemini ni `EMA_app`.
 
 **Siguiente:** cerrar los puntos W0/W5 que todavía requieran evidencia operativa no automatizada y coordinar el cierre con `ADMINN-EMA`. La edición de un libro publicado se trata como integración, no como nueva prueba obligatoria de operaciones ya aprobadas.
+
+
+## Verificación directa de producción Cloudflare · 26/10/2026
+
+**Comprobación externa con la cuenta Cloudflare titular del proyecto**, no inferida únicamente de Actions:
+
+- Cloudflare API `GET /accounts/{account_id}/pages/projects/ema`: proyecto `ema`, dominio `ema-85p.pages.dev`, origen GitHub `martin30eler-sketch/EMA`, rama de producción `main`.
+- Último despliegue `6b2dd7d7-4f66-44ec-845f-130bf7b3b90a`, estado final **success**, asociado exactamente al commit `dd10f9902759ea33cfe99051de371625939c2707`; entorno `production`.
+- Cloudflare Browser Run, modo de comprobación HTTP sin renderizado de JavaScript: `GET https://ema-85p.pages.dev/` devuelve **HTTP 200**, título correcto `EMA — Historias que Cobran Vida`.
+- Browser Run, renderizando JavaScript y esperando tarjetas reales: la biblioteca EMA cargó **2 libros**: `el-algoritmo-del-sol-de-medianoche` y `mi-amigo-body`.
+- Se recuperó directamente `https://ema-85p.pages.dev/catalogo.json` desde navegador Cloudflare: JSON público `schemaVersion: 1`, con ambos libros, rutas y número de páginas esperados.
+- **Alcance de evidencia:** sí se comprobó el contenido público y el estado HTTP 200 de inicio; **no** se capturaron en esta sesión los valores efectivos de los encabezados HTTP `Content-Security-Policy`, `Permissions-Policy` y `Cache-Control`. El archivo `public/_headers` y sus tests sí están versionados/desplegados, pero eso no sustituye leer encabezados de una respuesta real. El navegador de verificación no expuso dichos encabezados; el intento de sondeo interno venció por tiempo.
+
+**Estado W0/W1:** despliegue correcto y biblioteca pública real disponible; comprobación puntual de encabezados pendiente de evidencia, no de implementación. **No repetir las pruebas de lectura, narración y publicación ya aceptadas el 22/10**. No se modificaron libros, catálogos ni imágenes.
+
+**Siguiente:** obtener evidencia de encabezados HTTP desde una herramienta con acceso de red apropiado y cerrar formalmente W0/W5 junto a ADMINN-EMA.
