@@ -39,3 +39,18 @@ test('rechaza portadas, páginas y escenas con rutas ajenas o números cambiados
   v2.pages[1].scenes[0].image='/libros/un-libro/escena-002.jpg';
   assert.throws(()=>validateBook(v2,entry),/página 2/);
 });
+
+test('el lector bloquea narraciones superiores al contrato editorial de 10000 caracteres',()=>{
+ const legacy=makeBook();
+ legacy.pages[0].text='A'.repeat(10001);
+ assert.throws(()=>validateBook(legacy,entry),/página 1/);
+ legacy.pages[0].text='A'.repeat(10000);
+ assert.equal(validateBook(legacy,entry),legacy);
+ const gpt={...makeBook(),schemaVersion:2,pages:[
+  {number:1,chapterTitle:'Inicio',scenes:[{text:'Primera',image:'/libros/un-libro/escena-001.jpg'}]},
+  {number:2,chapterTitle:'Fin',scenes:[{text:'B'.repeat(10001),image:'/libros/un-libro/escena-002.jpg'}]}
+ ]};
+ assert.throws(()=>validateBook(gpt,entry),/página 2/);
+ gpt.pages[1].scenes[0].text='B'.repeat(10000);
+ assert.equal(validateBook(gpt,entry),gpt);
+});

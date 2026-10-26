@@ -8,6 +8,7 @@ const imagePath = (id,stem,name) => typeof name === 'string' &&
 const pad = number => String(number).padStart(3,'0');
 
 const titleOK = value => typeof value === 'string' && value.trim().length > 0 && value.length <= 240;
+const pageTextOK = value => typeof value === 'string' && value.trim().length > 0 && value.length <= 10000;
 const layoutOK = layout => layout == null || (typeof layout === 'object' && !Array.isArray(layout) &&
   [['x',0,95],['y',0,95],['width',25,90],['fontSize',10,24]].every(([key,min,max]) =>
     typeof layout[key] === 'number' && Number.isFinite(layout[key]) && layout[key] >= min && layout[key] <= max) &&
@@ -38,13 +39,13 @@ export function validateBook(book, entry) {
   book.pages.forEach((page, index) => {
     if (book.schemaVersion === 2) {
       if (!page || page.number !== index + 1 || typeof page.chapterTitle !== 'string' || !Array.isArray(page.scenes) || !page.scenes.length || page.scenes.length > 2 ||
-          page.scenes.some(scene => !scene || !imagePath(book.id,'escena-'+pad(++sceneIndex),scene.image) || typeof scene.text !== 'string' || !scene.text.trim() || !layoutOK(scene.layout) || ![undefined,'integrated','floating'].includes(scene.captionMode))) {
+          page.scenes.some(scene => !scene || !imagePath(book.id,'escena-'+pad(++sceneIndex),scene.image) || !pageTextOK(scene.text) || !layoutOK(scene.layout) || ![undefined,'integrated','floating'].includes(scene.captionMode))) {
         throw Error('Falta texto editable o ilustración en la página ' + (index + 1) + '.');
       }
       return;
     }
-    if (!page || page.number !== index + 1 || typeof page.text !== 'string' ||
-        !page.text.trim() || !imagePath(book.id,'pagina-'+pad(index+1),page.image)) {
+    if (!page || page.number !== index + 1 || !pageTextOK(page.text) ||
+        !imagePath(book.id,'pagina-'+pad(index+1),page.image)) {
       throw Error('Falta texto o ilustración en la página ' + (index + 1) + '.');
     }
   });
