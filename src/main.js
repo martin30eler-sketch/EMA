@@ -6,6 +6,7 @@ import {chapterStarts,currentChapter} from './chapters.js';
 import {isFavorite,toggleFavorite,hasReadingProgress} from './favorites.js';
 import {readReaderPreferences,saveReaderPreferences} from './reader-preferences.js';
 import {createMissingIllustration} from './image-fallback.js';
+import {freshPublicJsonPath} from './public-json.js';
 import './styles.css';
 
 const app = document.getElementById('app');
@@ -159,7 +160,7 @@ async function openBook(entry) {
   const main = shell();
   main.append(el('p', 'notice', 'Preparando el libro…'));
   try {
-    const res = await fetch(entry.bookPath, { cache: 'no-cache' });
+    const res = await fetch(freshPublicJsonPath(entry.bookPath), { cache: 'no-store' });
     if (!res.ok) throw Error('El archivo del libro no está disponible (' + res.status + ').');
     const book = validateBook(await res.json(), entry);
     if(requestId!==state.requestId)return;
@@ -460,7 +461,7 @@ async function loadCatalog() {
   const sequence=++state.catalogRequestId;
   const readerRequest=state.requestId;
   try {
-    const response=await fetch('/catalogo.json', {cache:'no-cache'});
+    const response=await fetch(freshPublicJsonPath('/catalogo.json'), {cache:'no-store'});
     if(!response.ok)throw Error('El catálogo respondió '+response.status+'.');
     const books=validateCatalog(await response.json());
     if(sequence!==state.catalogRequestId||readerRequest!==state.requestId)return;
